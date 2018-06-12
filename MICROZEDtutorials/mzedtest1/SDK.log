@@ -1,6 +1,0 @@
-16:26:26 INFO  : Launching XSDB server: xsdb.bat C:/Xilinx/SDK/2015.3/scripts/xsdb/xsdb/xsdb-server.tcl
-16:26:30 INFO  : XSDB server has started successfully.
-16:26:34 ERROR : Workspace location C:\Users\Jose Idlabs\Documents\GitHub\WATCHMAN\MICROZED tutorials\mzedtest1 contains spaces. Please switch to a workspace without spaces in its path.
-16:42:42 INFO  : Launching XSDB server: xsdb.bat C:/Xilinx/SDK/2015.3/scripts/xsdb/xsdb/xsdb-server.tcl
-16:42:43 INFO  : XSDB server has started successfully.
-16:42:43 ERROR : Workspace location C:\Users\Jose Idlabs\Documents\GitHub\WATCHMAN\MICROZEDtutorials\mzedtest1 contains spaces. Please switch to a workspace without spaces in its path.
