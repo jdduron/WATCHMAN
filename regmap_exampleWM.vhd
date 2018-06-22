@@ -14,31 +14,31 @@ entity RegMap is
       DAC_SPI_RATE_G : integer := 10000000
    );
    port (
-      clk           : in  sl;
-      sRst          : in  sl;
+      clk           : in  std_logic;
+      sRst          : in  std_logic;
       -- Pin connections to external devices
-      I2C_SCL       : inout sl;
-      I2C_SDA       : inout sl;
-      adcSclk       : out slv(1 downto 0);
-      adcSen        : out slv(1 downto 0);
-      adcSdata      : out slv(1 downto 0);
-      adcSdout      : in  slv(1 downto 0);
-      henrySpiClk   : out sl;
-      henrySpiData  : out sl;
-      henrySpiLoad  : out sl;
-      henrySpiRdBit : in  sl;
+      I2C_SCL       : inout std_logic;
+      I2C_SDA       : inout std_logic;
+      adcSclk       : out std_logic_vector(1 downto 0);
+      adcSen        : out std_logic_vector(1 downto 0);
+      adcSdata      : out std_logic_vector(1 downto 0);
+      adcSdout      : in  std_logic_vector(1 downto 0);
+      henrySpiClk   : out std_logic;
+      henrySpiData  : out std_logic;
+      henrySpiLoad  : out std_logic;
+      henrySpiRdBit : in  std_logic;
       -- Register interfaces to UART controller
-      regAddr       : in  slv(31 downto 0);
-      regWrData     : in  slv(31 downto 0);
-      regRdData     : out slv(31 downto 0);
-      regReq        : in  sl;
-      regOp         : in  sl;
-      regAck        : out sl;
+      regAddr       : in  std_logic_vector(31 downto 0);
+      regWrData     : in  std_logic_vector(31 downto 0);
+      regRdData     : out std_logic_vector(31 downto 0);
+      regReq        : in  std_logic;
+      regOp         : in  std_logic;
+      regAck        : out std_logic;
       -- Inband telemetry data (flattened for ease of passing around)
-      telemetryData : out slv(32*INBAND_TELEMETRY_REGISTERS_C-1 downto 0);
-      telemetryAddr : out slv(32*INBAND_TELEMETRY_REGISTERS_C-1 downto 0);
+      telemetryData : out std_logic_vector(32*INBAND_TELEMETRY_REGISTERS_C-1 downto 0);
+      telemetryAddr : out std_logic_vector(32*INBAND_TELEMETRY_REGISTERS_C-1 downto 0);
       -- Current time in clock ticks
-      currentTime   : out slv(63 downto 0);
+      currentTime   : out std_logic_vector(63 downto 0);
       -- Status and configuration connections to rest of the firmware
       P1Status      : in  StatusType;
       P1Config      : out ConfigType
@@ -47,42 +47,42 @@ end RegMap;
 
 architecture Behavioral of RegMap is
    signal p1ConfigReg : ConfigType := (CONFIG_TYPE_INIT_C);
-   
-   signal i2cReq      : slv(1 downto 0);
-   signal i2cAck      : slv(1 downto 0);
+
+   signal i2cReq      : std_logic_vector(1 downto 0);
+   signal i2cAck      : std_logic_vector(1 downto 0);
    signal i2cReadData : Word16Array(1 downto 0);
-   signal i2cFail     : slv(1 downto 0);
-   signal i2cSda      : slv(1 downto 0) := (others => '1');
-   signal i2cScl      : slv(1 downto 0) := (others => '1');
-   signal i2cSdaMux   : sl := '1';
-   signal i2cSclMux   : sl := '1';
-   
-   signal adcReq        : slv(1 downto 0);
-   signal adcAck        : slv(1 downto 0);
+   signal i2cFail     : std_logic_vector(1 downto 0);
+   signal i2cSda      : std_logic_vector(1 downto 0) := (others => '1');
+   signal i2cScl      : std_logic_vector(1 downto 0) := (others => '1');
+   signal i2cSdaMux   : std_logic := '1';
+   signal i2cSclMux   : std_logic := '1';
+
+   signal adcReq        : std_logic_vector(1 downto 0);
+   signal adcAck        : std_logic_vector(1 downto 0);
    signal adcReadData   : Word16Array(1 downto 0);
    type AdcShadowDualArray is array (1 downto 0) of Word16Array(67 downto 0);
    signal adcShadowData : AdcShadowDualArray;
-   
-   signal henryReq        : sl;
-   signal henryAck        : sl;
-   signal henryReadData   : slv(13 downto 0); 
-   signal henryShadowData : Word14Array(38 downto 0); 
 
-   signal timeReq     : sl := '0';
-   signal timeAck     : sl := '0';
-   signal timeRdData  : slv(31 downto 0) := (others => '0');
-   
-   signal i2cSclT     : sl := '0';
-   signal i2cSdaT     : sl := '0';
-   signal i2cSdaRead  : sl := '0';
-   signal i2cSclRead  : sl := '0';
-   
-   signal efuseVal    : slv(31 downto 0);
-   signal deviceDna   : slv(63 downto 0);
+   signal henryReq        : std_logic;
+   signal henryAck        : std_logic;
+   signal henryReadData   : std_logic_vector(13 downto 0);
+   signal henryShadowData : Word14Array(38 downto 0);
+
+   signal timeReq     : std_logic := '0';
+   signal timeAck     : std_logic := '0';
+   signal timeRdData  : std_logic_vector(31 downto 0) := (others => '0');
+
+   signal i2cSclT     : std_logic := '0';
+   signal i2cSdaT     : std_logic := '0';
+   signal i2cSdaRead  : std_logic := '0';
+   signal i2cSclRead  : std_logic := '0';
+
+   signal efuseVal    : std_logic_vector(31 downto 0);
+   signal deviceDna   : std_logic_vector(63 downto 0);
 
    constant BITS_ADDR_C : integer := 32;
    constant BITS_DATA_C : integer := 32;
-   
+
    attribute dont_touch : string;
    attribute dont_touch of i2cSclT : signal is "true";
    attribute dont_touch of i2cSdaT : signal is "true";
@@ -91,7 +91,7 @@ begin
 
    P1Config <= p1ConfigReg;
 
-   process (clk) 
+   process (clk)
       variable adcAddr : integer range 0 to 3 := 0;
    begin
       if rising_edge(clk) then
@@ -101,9 +101,6 @@ begin
             -- Default for all registers write and read in one cycle.
             -- This can be overridden below for specific registers.
             regAck    <= regReq;
-            i2cReq    <= (others => '0');
-            i2cSdaMux <= '1';
-            i2cSclMux <= '1';
             adcReq    <= (others => '0');
             p1ConfigReg.adcTxTrig  <= '0';
             p1ConfigReg.adcReset   <= '0';
@@ -118,8 +115,8 @@ begin
                   when x"0C" => regRdData <= deviceDna(63 downto 32);
                   when x"10" => regRdData <= efuseVal;
                   when x"14" => regRdData <= p1ConfigReg.scratchPad;
-                     if regOp = '1' and regReq = '1' then 
-                        p1ConfigReg.scratchPad <= regWrData; 
+                     if regOp = '1' and regReq = '1' then
+                        p1ConfigReg.scratchPad <= regWrData;
                      end if;
                   when x"20" => regRdData <= CORE_CLK_FREQ_C;
                   when x"24" => regRdData <= timeRdData;
@@ -151,7 +148,7 @@ begin
                         p1ConfigReg.frameTestMode <= regWrData(2);
                         p1ConfigReg.rawAdcMode    <= regWrData(3);
                      end if;
-                  when x"08"  => regRdData <= p1ConfigReg.laneAdcDisable(3) & "00" & p1ConfigReg.laneAdcSel(3) & 
+                  when x"08"  => regRdData <= p1ConfigReg.laneAdcDisable(3) & "00" & p1ConfigReg.laneAdcSel(3) &
                                               p1ConfigReg.laneAdcDisable(2) & "00" & p1ConfigReg.laneAdcSel(2) &
                                               p1ConfigReg.laneAdcDisable(1) & "00" & p1ConfigReg.laneAdcSel(1) &
                                               p1ConfigReg.laneAdcDisable(0) & "00" & p1ConfigReg.laneAdcSel(0);
@@ -175,7 +172,7 @@ begin
                   when x"10" => regRdData <= x"0000" & x"00" & "00" & P1Status.pGoodBits & "00" & p1ConfigReg.pShdnBits;
                      if regOp = '1' and regReq = '1' then
                         p1ConfigReg.pShdnBits <= regWrData(1 downto 0);
-                     end if; 
+                     end if;
                   when others => regRdData <= x"BAD1BEEF";
                end case;
             -- 0x02XX: Reserved for ADC spy ports
@@ -185,49 +182,49 @@ begin
             -- 0x03XX: MAC address registers for various lanes
             elsif regAddr(15 downto 8) = x"03" then
                case regAddr(7 downto 0) is
-                  when x"00" => 
+                  when x"00" =>
                      regRdData <= p1ConfigReg.destMac(0)(47 downto 16);
-                     if regOp = '1' and regReq ='1' then 
+                     if regOp = '1' and regReq ='1' then
                         p1ConfigReg.destMac(0)(47 downto 16) <= regWrData;
                      end if;
-                  when x"04" => 
+                  when x"04" =>
                      regRdData <= x"0000" & p1ConfigReg.destMac(0)(15 downto 0);
-                     if regOp = '1' and regReq ='1' then 
+                     if regOp = '1' and regReq ='1' then
                         p1ConfigReg.destMac(0)(15 downto 0) <= regWrData(15 downto 0);
                      end if;
-                  when x"08" => 
+                  when x"08" =>
                         regRdData <= p1ConfigReg.destMac(1)(47 downto 16);
-                        if regOp = '1' and regReq ='1' then 
+                        if regOp = '1' and regReq ='1' then
                            p1ConfigReg.destMac(1)(47 downto 16) <= regWrData;
                         end if;
-                  when x"0C" => 
+                  when x"0C" =>
                      regRdData <= x"0000" & p1ConfigReg.destMac(1)(15 downto 0);
-                     if regOp = '1' and regReq ='1' then 
+                     if regOp = '1' and regReq ='1' then
                         p1ConfigReg.destMac(1)(15 downto 0) <= regWrData(15 downto 0);
                      end if;
-                  when x"10" => 
+                  when x"10" =>
                         regRdData <= p1ConfigReg.destMac(2)(47 downto 16);
-                        if regOp = '1' and regReq ='1' then 
+                        if regOp = '1' and regReq ='1' then
                            p1ConfigReg.destMac(2)(47 downto 16) <= regWrData;
                         end if;
-                  when x"14" => 
+                  when x"14" =>
                      regRdData <= x"0000" & p1ConfigReg.destMac(2)(15 downto 0);
-                     if regOp = '1' and regReq ='1' then 
+                     if regOp = '1' and regReq ='1' then
                         p1ConfigReg.destMac(2)(15 downto 0) <= regWrData(15 downto 0);
                      end if;
-                  when x"18" => 
+                  when x"18" =>
                         regRdData <= p1ConfigReg.destMac(3)(47 downto 16);
-                        if regOp = '1' and regReq ='1' then 
+                        if regOp = '1' and regReq ='1' then
                            p1ConfigReg.destMac(3)(47 downto 16) <= regWrData;
                         end if;
-                  when x"1C" => 
+                  when x"1C" =>
                      regRdData <= x"0000" & p1ConfigReg.destMac(3)(15 downto 0);
-                     if regOp = '1' and regReq ='1' then 
+                     if regOp = '1' and regReq ='1' then
                         p1ConfigReg.destMac(3)(15 downto 0) <= regWrData(15 downto 0);
                      end if;
                   when others => regRdData <= x"BAD3BEEF";
                end case;
-            -- 0x20XX: Galvanically isolated output control 
+            -- 0x20XX: Galvanically isolated output control
             elsif regAddr(15 downto 8) = x"20" then
                case regAddr(7 downto 0) is
                   when x"00" =>
@@ -243,11 +240,11 @@ begin
                adcReq(0) <= regReq;
                regAck    <= adcAck(0);
                regRdData <= x"0000" & adcReadData(0);
-            -- SPI Interface to ADC B 
+            -- SPI Interface to ADC B
             elsif "00" & regAddr(15 downto 10) = x"15" then
                adcReq(1) <= regReq;
                regAck    <= adcAck(1);
-               regRdData <= x"0000" & adcReadData(1);            
+               regRdData <= x"0000" & adcReadData(1);
             -- SPI Interface to HENRY
             elsif "00" & regAddr(15 downto 10) = x"16" then
                henryReq  <= regReq;
@@ -270,7 +267,7 @@ begin
                i2cSclMux <= i2cScl(1);
                i2cReq(1) <= regReq;
                regAck    <= i2cAck(1);
-               regRdData <= i2cFail(1) & "000" & x"000" & i2cReadData(1);            
+               regRdData <= i2cFail(1) & "000" & x"000" & i2cReadData(1);
             else
                regRdData <= x"BADBEBAD";
             end if;
@@ -282,16 +279,16 @@ begin
    -- Local Time Counter --
    ------------------------
    U_SystemTime : entity work.SystemTime
-      port map ( 
-         clk       => clk,         --: in  sl;
-         rst       => sRst,        --: in  sl;
+      port map (
+         clk       => clk,         --: in  std_logic;
+         rst       => sRst,        --: in  std_logic;
          -- Parallel interface for current ticks value
-         ticksOut  => currentTime, --: out slv(63 downto 0);
+         ticksOut  => currentTime, --: out std_logic_vector(63 downto 0);
          -- 32-bit interface to match up with the reg controller
-         regHiWord => regAddr(3),  --: in  sl; -- 1-bit high if you're reading 63:32, low for 31:0
-         regReq    => timeReq,     --: in  sl; -- Standard register handshake signals
-         regAck    => timeAck,     --: out sl; -- No need for op since we're read only
-         regRdData => timeRdData   --: out slv(31 downto 0) 
+         regHiWord => regAddr(3),  --: in  std_logic; -- 1-bit high if you're reading 63:32, low for 31:0
+         regReq    => timeReq,     --: in  std_logic; -- Standard register handshake signals
+         regAck    => timeAck,     --: out std_logic; -- No need for op since we're read only
+         regRdData => timeRdData   --: out std_logic_vector(31 downto 0)
       );
 
    -----------------------------------------------------
@@ -307,12 +304,12 @@ begin
       );
    -- Device DNA (64-bit)
    U_DeviceDna : entity work.DeviceDna
-      port map ( 
+      port map (
          clk       => clk,
          rst       => sRst,
          -- Parallel interface for current ticks value
          dnaOut    => deviceDna
-      );   
+      );
 
    -----------------
    -- SPI Devices --
@@ -321,7 +318,7 @@ begin
    G_SpiAdc : for i in 1 downto 0 generate
       U_SpiAds52j90 : entity work.SpiAds52j90
          generic map (
-            SCLK_HALF_PERIOD_G => 50 
+            SCLK_HALF_PERIOD_G => 50
          )
          port map (
             -- Clock and reset
@@ -346,7 +343,7 @@ begin
    -- Modules for serial communication with HENRY
    U_SpiHenry : entity work.SpiHenryV1
    generic map (
-      SCLK_HALF_PERIOD_G => 50 
+      SCLK_HALF_PERIOD_G => 50
    )
    port map (
       -- Clock and reset
@@ -396,21 +393,21 @@ begin
          I2C_ADDR_G => "1001001",
          SCL_HALF_PERIOD_G => 200
       )
-      port map ( 
+      port map (
          -- Pins to device
-         I2C_SCL    => i2cScl(0),             --: inout sl;
-         I2C_SDA    => i2cSda(0),             --: inout sl;
+         I2C_SCL    => i2cScl(0),             --: inout std_logic;
+         I2C_SDA    => i2cSda(0),             --: inout std_logic;
          I2C_SDAI   => i2cSdaRead,
          -- Clock and reset
-         sysClk     => clk,                   --: in    sl;
-         sysRst     => sRst,                  --: in    sl;
+         sysClk     => clk,                   --: in    std_logic;
+         sysRst     => sRst,                  --: in    std_logic;
          -- Interface to register controller
-         i2cReq     => i2cReq(0),             --: in    sl;
-         i2cOp      => regOp,                 --: in    sl;
-         i2cAck     => i2cAck(0),             --: out   sl;
-         i2cRegAddr => regAddr(9 downto 2),   --: in    slv(7 downto 0);
-         i2cRdData  => i2cReadData(0),        --: out   slv(15 downto 0);
-         i2cWrData  => regWrData(15 downto 0),--: in    slv(15 downto 0)
+         i2cReq     => i2cReq(0),             --: in    std_logic;
+         i2cOp      => regOp,                 --: in    std_logic;
+         i2cAck     => i2cAck(0),             --: out   std_logic;
+         i2cRegAddr => regAddr(9 downto 2),   --: in    std_logic_vector(7 downto 0);
+         i2cRdData  => i2cReadData(0),        --: out   std_logic_vector(15 downto 0);
+         i2cWrData  => regWrData(15 downto 0),--: in    std_logic_vector(15 downto 0)
          i2cFail    => i2cFail(0)
       );
    -----------
@@ -419,21 +416,21 @@ begin
          I2C_ADDR_G => "1001000",
          SCL_HALF_PERIOD_G => 200
       )
-      port map ( 
+      port map (
          -- Pins to device
-         I2C_SCL    => i2cScl(1),             --: inout sl;
-         I2C_SDA    => i2cSda(1),             --: inout sl;
+         I2C_SCL    => i2cScl(1),             --: inout std_logic;
+         I2C_SDA    => i2cSda(1),             --: inout std_logic;
          I2C_SDAI   => i2cSdaRead,
          -- Clock and reset
-         sysClk     => clk,                   --: in    sl;
-         sysRst     => sRst,                  --: in    sl;
+         sysClk     => clk,                   --: in    std_logic;
+         sysRst     => sRst,                  --: in    std_logic;
          -- Interface to register controller
-         i2cReq     => i2cReq(1),             --: in    sl;
-         i2cOp      => regOp,                 --: in    sl;
-         i2cAck     => i2cAck(1),             --: out   sl;
-         i2cRegAddr => regAddr(9 downto 2),   --: in    slv(7 downto 0);
-         i2cRdData  => i2cReadData(1),        --: out   slv(15 downto 0);
-         i2cWrData  => regWrData(15 downto 0),--: in    slv(15 downto 0)
+         i2cReq     => i2cReq(1),             --: in    std_logic;
+         i2cOp      => regOp,                 --: in    std_logic;
+         i2cAck     => i2cAck(1),             --: out   std_logic;
+         i2cRegAddr => regAddr(9 downto 2),   --: in    std_logic_vector(7 downto 0);
+         i2cRdData  => i2cReadData(1),        --: out   std_logic_vector(15 downto 0);
+         i2cWrData  => regWrData(15 downto 0),--: in    std_logic_vector(15 downto 0)
          i2cFail    => i2cFail(1)
       );
 
@@ -447,26 +444,26 @@ begin
    telemetryData( 3*BITS_DATA_C-1 downto  2*BITS_DATA_C) <= p1ConfigReg.laneAdcDisable(3) & "00" & p1ConfigReg.laneAdcSel(3) & p1ConfigReg.laneAdcDisable(2) & "00" & p1ConfigReg.laneAdcSel(2) & p1ConfigReg.laneAdcDisable(1) & "00" & p1ConfigReg.laneAdcSel(1) & p1ConfigReg.laneAdcDisable(0) & "00" & p1ConfigReg.laneAdcSel(0);
    -- GROUP 1, ADC A shadow registers + pad word
    G_ADC_A_TELEMETRY : for i in 0 to 67 generate
-      telemetryAddr( (4+i)*BITS_ADDR_C-1 downto  (3+i)*BITS_ADDR_C ) <= x"00" & "00" & x"014" & slv(to_unsigned(i,8)) & "00";
+      telemetryAddr( (4+i)*BITS_ADDR_C-1 downto  (3+i)*BITS_ADDR_C ) <= x"00" & "00" & x"014" & std_logic_vector(to_unsigned(i,8)) & "00";
       telemetryData( (4+i)*BITS_DATA_C-1 downto  (3+i)*BITS_DATA_C ) <= x"0000" & adcShadowData(0)(i);
    end generate;
    telemetryAddr(72*BITS_ADDR_C-1 downto  71*BITS_ADDR_C) <= (others => '0');
    telemetryData(72*BITS_DATA_C-1 downto  71*BITS_DATA_C) <= (others => '0');
    -- GROUP 2, ADC B shadow registers + pad word
    G_ADC_B_TELEMETRY : for i in 0 to 67 generate
-      telemetryAddr( (73+i)*BITS_ADDR_C-1 downto  (72+i)*BITS_ADDR_C) <= x"00" & "00" & x"015" & slv(to_unsigned(i,8)) & "00";
+      telemetryAddr( (73+i)*BITS_ADDR_C-1 downto  (72+i)*BITS_ADDR_C) <= x"00" & "00" & x"015" & std_logic_vector(to_unsigned(i,8)) & "00";
       telemetryData( (73+i)*BITS_DATA_C-1 downto  (72+i)*BITS_DATA_C) <= x"0000" & adcShadowData(1)(i);
-   end generate;   
+   end generate;
    telemetryAddr(141*BITS_ADDR_C-1 downto 140*BITS_ADDR_C) <= (others => '0');
    telemetryData(141*BITS_DATA_C-1 downto 140*BITS_DATA_C) <= (others => '0');
    -- GROUP 3, ROIC shadow registers
    G_ROIC_TELEMETRY : for i in 0 to 38 generate
-      telemetryAddr( (142+i)*BITS_ADDR_C-1 downto  (141+i)*BITS_ADDR_C) <= x"00" & "00" & x"016" & slv(to_unsigned(i,8)) & "00";
+      telemetryAddr( (142+i)*BITS_ADDR_C-1 downto  (141+i)*BITS_ADDR_C) <= x"00" & "00" & x"016" & std_logic_vector(to_unsigned(i,8)) & "00";
       telemetryData( (142+i)*BITS_DATA_C-1 downto  (141+i)*BITS_DATA_C) <= x"0000" & "00" & henryShadowData(i);
-   end generate; 
+   end generate;
    -- GROUP 4, Galvanically isolated port
    telemetryAddr(181*BITS_ADDR_C-1 downto 180*BITS_ADDR_C) <= x"00002000";
-   telemetryData(181*BITS_DATA_C-1 downto 180*BITS_DATA_C) <= x"000000" & p1ConfigReg.gPort(1) & p1ConfigReg.gPort(0); 
+   telemetryData(181*BITS_DATA_C-1 downto 180*BITS_DATA_C) <= x"000000" & p1ConfigReg.gPort(1) & p1ConfigReg.gPort(0);
    -- Last one is 3+69+69+39+1 = 181, 4 bytes per word
 
 end Behavioral;
