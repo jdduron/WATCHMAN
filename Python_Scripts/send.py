@@ -70,8 +70,8 @@ def get_commands(parser):
         all_commands = all_commands.strip()
 
     #include the packet length and return back to main
-    payload = str(packet_length) + delimiter + all_commands
-    print payload;  
+    payload = str(packet_length) + delimiter + all_commands  + 'end'
+    print payload;
     return payload;
 
 def main():
@@ -82,6 +82,8 @@ def main():
     #Send over the udp packet
     sock.sendto(length_and_commands, (UDP_IP, UDP_PORT))
 
+    # recv_flag = 0;
+    # while (recv_flag != -1):
     data, server = sock.recvfrom(8192)
     print >>sys.stderr, 'recieved "%s"' % data
 

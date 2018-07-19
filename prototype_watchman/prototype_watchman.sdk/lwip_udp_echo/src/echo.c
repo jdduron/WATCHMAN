@@ -36,10 +36,12 @@
 #include "lwip/err.h"
 //#include "lwip/tcp.h"
 #include "lwip/udp.h"
-
+#define MAX_ARRAY_SIZE 100
 #if defined (__arm__) || defined (__aarch64__)
 #include "xil_printf.h"
 #endif
+
+//char** command_buffer[MAX_ARRAY_SIZE];
 
 int transfer_data() {
 	return 0;
@@ -94,21 +96,32 @@ void print_app_header()
 //	return ERR_OK;
 //}
 
+//void clear_buf(){
+//	for(int i = 0; i < MAX_ARRAY_SIZE; i++) {
+//		command_buffer[i] = "0000";
+//	}
+//}
+
 char** command_parser(struct pbuf *p){
 	char* payload = p->payload;
-	char** command_buffer;
-	int count = 0;
+	int cmd_buf_size = 0;
 	const char delimiter[2] = "/";
 
 	//Tokenize the string using delimiter
 	char* token = strtok(payload, delimiter);
-	command_buffer[count] = token;
-	count++;
+	char **command_buffer[MAX_ARRAY_SIZE];
+	command_buffer[cmd_buf_size] = token;
+	cmd_buf_size++;
 
-	while (token != NULL && count < 1000) {
+	while (token != NULL && cmd_buf_size < 1000) {
+
 		token = strtok(NULL, delimiter);
-		command_buffer[count] = token;
-		count++;
+		command_buffer[cmd_buf_size] = token;
+		cmd_buf_size++;
+	}
+
+	for(int i = 0; i < cmd_buf_size; i++){
+		printf("%s\n", command_buffer[i]);
 	}
 
 	return command_buffer;
@@ -131,11 +144,10 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     if (p != NULL) {
 
     	//An array of "strings" which holds individual commands and arguments from the payload
-    	char** command_buffer;
+    	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
-    	command_buffer = command_parser(p);
-    	p->payload = "Hello World";
-    	p->len = 3;
+    	cmd_buffer = command_parser(p);
+
         udp_sendto(pcb, p, addr, port);
 
 
