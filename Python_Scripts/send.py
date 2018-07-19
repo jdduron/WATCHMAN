@@ -7,7 +7,7 @@ import optparse
 UDP_IP = "192.168.1.10"
 UDP_PORT = 7
 
-delimiter = ' '
+delimiter = '/'
 
 #Creates the socket
 def setup_connection():
@@ -32,7 +32,6 @@ def get_commands(parser):
 
     while send_flag != -1:
 
-        set_payload_flag = 0
         (options, args) = parser.parse_args()
 
         #Check if there is a command
@@ -48,12 +47,12 @@ def get_commands(parser):
         #Send - Send current stream of commands
         elif options.command == "send":
             options.message = ''
-            set_payload_flag = -1;
             send_flag = -1;
 
         #Ping - Pings device
         elif options.command == "ping":
             options.message = ''
+	    all_commands = all_commands + options.command + delimiter
             packet_length += 2;
 
         #Read or Rite
@@ -61,19 +60,18 @@ def get_commands(parser):
             options.message = raw_input('Enter a message to send: ');
             packet_length += 3;
             options.message = options.message.strip()
+	    all_commands = all_commands + options.command + delimiter + options.message + delimiter
 
         #Invalid command
         else:
             print "Not a valid command"
             set_payload_flag = -1
 
-        if set_payload_flag == 0:
-            #Put together the command and message
-            all_commands = all_commands + delimiter + options.command + delimiter + options.message
-            all_commands = all_commands.strip()
+        all_commands = all_commands.strip()
 
     #include the packet length and return back to main
     payload = str(packet_length) + delimiter + all_commands
+    print payload;  
     return payload;
 
 def main():
@@ -84,7 +82,7 @@ def main():
     #Send over the udp packet
     sock.sendto(length_and_commands, (UDP_IP, UDP_PORT))
 
-    data, server = sock.recvfrom(4096)
-    print >>sys.stderr, 'received "%s"' % data
+    data, server = sock.recvfrom(8192)
+    print >>sys.stderr, 'recieved "%s"' % data
 
 main()
