@@ -34,7 +34,7 @@
 #include <string.h>
 
 #include "lwip/err.h"
-#include "lwip/tcp.h"
+//#include "lwip/tcp.h"
 #include "lwip/udp.h"
 
 #if defined (__arm__) || defined (__aarch64__)
@@ -94,16 +94,55 @@ void print_app_header()
 //	return ERR_OK;
 //}
 
+char** command_parser(struct pbuf *p){
+	char* payload = p->payload;
+	char** command_buffer;
+	int count = 0;
+	const char delimiter[2] = "/";
+
+	//Tokenize the string using delimiter
+	char* token = strtok(payload, delimiter);
+	command_buffer[count] = token;
+	count++;
+
+	while (token != NULL && count < 1000) {
+		token = strtok(NULL, delimiter);
+		command_buffer[count] = token;
+		count++;
+	}
+
+	return command_buffer;
+
+}
+
+void command_interpreter(char** command_buffer){
+
+		printf("Command Interpreter ???\n");
+
+//        udp_sendto(pcb, p, addr, port);
+        /* free the pbuf */
+//        pbuf_free(p);
+}
+
 void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
-//	p->payload = "I like blue";
 
     if (p != NULL) {
-        /* send received packet back to sender */
+
+    	//An array of "strings" which holds individual commands and arguments from the payload
+    	char** command_buffer;
+    	//Creates a buffer with parsed string commands from the payload
+    	command_buffer = command_parser(p);
+    	p->payload = "Hello World";
+    	p->len = 3;
         udp_sendto(pcb, p, addr, port);
-        /* free the pbuf */
+
+
+    	//Send buffer of commands into command interpreter
+    	/* send received packet back to sender */
         pbuf_free(p);
+
     }
 }
 
