@@ -41,7 +41,7 @@
 #include "xil_printf.h"
 #endif
 
-//char** command_buffer[MAX_ARRAY_SIZE];
+char** command_buffer[MAX_ARRAY_SIZE];
 
 int transfer_data() {
 	return 0;
@@ -102,14 +102,14 @@ void print_app_header()
 //	}
 //}
 
-char** command_parser(struct pbuf *p){
+void command_parser(struct pbuf *p){
 	char* payload = p->payload;
 	int cmd_buf_size = 0;
 	const char delimiter[2] = "/";
 
 	//Tokenize the string using delimiter
 	char* token = strtok(payload, delimiter);
-	char **command_buffer[MAX_ARRAY_SIZE];
+//	char **command_buffer[MAX_ARRAY_SIZE];
 	command_buffer[cmd_buf_size] = token;
 	cmd_buf_size++;
 
@@ -123,8 +123,9 @@ char** command_parser(struct pbuf *p){
 	for(int i = 0; i < cmd_buf_size; i++){
 		printf("%s\n", command_buffer[i]);
 	}
+	command_buffer[cmd_buf_size] = NULL;
 
-	return command_buffer;
+//	return command_buffer;
 
 }
 
@@ -146,8 +147,10 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	//An array of "strings" which holds individual commands and arguments from the payload
     	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
-    	cmd_buffer = command_parser(p);
-
+    	command_parser(p);
+    	for(int i = 0; command_buffer[i] != NULL; i++){
+    		printf("%s\n", command_buffer[i]);
+    	}
         udp_sendto(pcb, p, addr, port);
 
 
