@@ -34,12 +34,14 @@
 #include <string.h>
 
 #include "lwip/err.h"
-#include "lwip/tcp.h"
+//#include "lwip/tcp.h"
 #include "lwip/udp.h"
-
+#define MAX_ARRAY_SIZE 100
 #if defined (__arm__) || defined (__aarch64__)
 #include "xil_printf.h"
 #endif
+
+char** command_buffer[MAX_ARRAY_SIZE];
 
 int transfer_data() {
 	return 0;
@@ -94,16 +96,68 @@ void print_app_header()
 //	return ERR_OK;
 //}
 
+//void clear_buf(){
+//	for(int i = 0; i < MAX_ARRAY_SIZE; i++) {
+//		command_buffer[i] = "0000";
+//	}
+//}
+
+void command_parser(struct pbuf *p){
+	char* payload = p->payload;
+	int cmd_buf_size = 0;
+	const char delimiter[2] = "/";
+
+	//Tokenize the string using delimiter
+	char* token = strtok(payload, delimiter);
+//	char **command_buffer[MAX_ARRAY_SIZE];
+	command_buffer[cmd_buf_size] = token;
+	cmd_buf_size++;
+
+	while (token != NULL && cmd_buf_size < 1000) {
+
+		token = strtok(NULL, delimiter);
+		command_buffer[cmd_buf_size] = token;
+		cmd_buf_size++;
+	}
+
+	for(int i = 0; i < cmd_buf_size; i++){
+		printf("%s\n", command_buffer[i]);
+	}
+	command_buffer[cmd_buf_size] = NULL;
+
+//	return command_buffer;
+
+}
+
+void command_interpreter(char** command_buffer){
+
+		printf("Command Interpreter ???\n");
+
+//        udp_sendto(pcb, p, addr, port);
+        /* free the pbuf */
+//        pbuf_free(p);
+}
+
 void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
-//	p->payload = "I like blue";
 
     if (p != NULL) {
-        /* send received packet back to sender */
+
+    	//An array of "strings" which holds individual commands and arguments from the payload
+    	char** cmd_buffer;
+    	//Creates a buffer with parsed string commands from the payload
+    	command_parser(p);
+    	for(int i = 0; command_buffer[i] != NULL; i++){
+    		printf("%s\n", command_buffer[i]);
+    	}
         udp_sendto(pcb, p, addr, port);
-        /* free the pbuf */
+
+
+    	//Send buffer of commands into command interpreter
+    	/* send received packet back to sender */
         pbuf_free(p);
+
     }
 }
 
