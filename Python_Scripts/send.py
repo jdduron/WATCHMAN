@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#Hello Potato
 import sys
 import socket
 import optparse

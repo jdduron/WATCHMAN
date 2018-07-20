@@ -12,3 +12,4 @@ prototype_watchman/prototype_watchman.sdk/prototype_watchman_wrapper_hw_platform
 prototype_watchman/prototype_watchman.sdk/webtalk/
 prototype_watchman/prototype_watchman.srcs/
 prototype_watchman/prototype_watchman.xpr
+Python_Scripts/*.py~
