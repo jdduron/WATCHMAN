@@ -32,6 +32,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "cmd_parser.h"
 
 #include "lwip/err.h"
 //#include "lwip/tcp.h"
@@ -41,7 +42,10 @@
 #include "xil_printf.h"
 #endif
 
-char** command_buffer[MAX_ARRAY_SIZE];
+u16_t RemotePort;
+struct ip_addr *RemoteAddr;
+struct udp_pcb send_pcb;
+
 
 int transfer_data() {
 	return 0;
@@ -102,32 +106,7 @@ void print_app_header()
 //	}
 //}
 
-void command_parser(struct pbuf *p){
-	char* payload = p->payload;
-	int cmd_buf_size = 0;
-	const char delimiter[2] = "/";
 
-	//Tokenize the string using delimiter
-	char* token = strtok(payload, delimiter);
-//	char **command_buffer[MAX_ARRAY_SIZE];
-	command_buffer[cmd_buf_size] = token;
-	cmd_buf_size++;
-
-	while (token != NULL && cmd_buf_size < 1000) {
-
-		token = strtok(NULL, delimiter);
-		command_buffer[cmd_buf_size] = token;
-		cmd_buf_size++;
-	}
-
-	for(int i = 0; i < cmd_buf_size; i++){
-		printf("%s\n", command_buffer[i]);
-	}
-	command_buffer[cmd_buf_size] = NULL;
-
-//	return command_buffer;
-
-}
 
 void command_interpreter(char** command_buffer){
 
@@ -142,17 +121,22 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
 
+
     if (p != NULL) {
 
     	//An array of "strings" which holds individual commands and arguments from the payload
     	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
     	command_parser(p);
+//    	char* test= "hello\n";
+
     	for(int i = 0; command_buffer[i] != NULL; i++){
     		printf("%s\n", command_buffer[i]);
     	}
-        udp_sendto(pcb, p, addr, port);
-
+//
+//    	for(int i = 0; i < 5; i++){
+    		udp_sendto(pcb, p, addr, port);
+//    }
 
     	//Send buffer of commands into command interpreter
     	/* send received packet back to sender */
