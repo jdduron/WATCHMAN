@@ -127,7 +127,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	for(int i = 0; command_buffer[i] != NULL; i++){
     		printf("%s\n", command_buffer[i]);
     	}
-
+    	printf("Hello\n");
 //    	for(int i = 0; i < 5; i++){
     		udp_sendto(pcb, p, addr, port);
 // 		}
