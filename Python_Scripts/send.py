@@ -1,5 +1,5 @@
-##############################################################################
 #!/usr/bin/env python
+############################################################################
 #Author: Ky Ho, Jose Duron
 #Date:7/18/19
 # Main ETHERNET Module to Send and Recieve UDP DATAGRAMS to MICROZED
@@ -7,7 +7,7 @@
 #This module uses a fixed IP address and port number that must match the
 #IP address of the MICROZED. This module restricts the sent packages to be
 #predefined commands: ping, read, rite, send, and exit.
-# ############################################################################
+##############################################################################
 import sys
 import socket
 import optparse
@@ -93,9 +93,9 @@ def main():
 
     recv_flag = 0
     # while (recv_flag != -1):
-    while(recv_flag < 5):
-    	data, server = sock.recvfrom(8192)
-    	print >>sys.stderr, 'recieved "%s"' % data
-	recv_flag = recv_flag + 1
+#    whilinte(recv_flag < 5):
+    data, server = sock.recvfrom(8192)
+    print >>sys.stderr, 'recieved "%s"' % data
+#	recv_flag = recv_flag + 1
 
 main()
