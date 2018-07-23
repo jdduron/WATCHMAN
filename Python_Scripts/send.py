@@ -79,7 +79,7 @@ def get_commands(parser):
         all_commands = all_commands.strip()
 
     #include the packet length and return back to main
-    payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands #payload with header, without checksum and 'end'
+    payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands + 'end' #payload with header, without checksum and 'end'
     #    checksum =
     print payload;
     return payload;
@@ -96,7 +96,8 @@ def main():
 
     while (recv_flag != -1):
         data, server = sock.recvfrom(8192)
-        
+        if(data == 'end'):
+            recv_flag = -1;
         print >>sys.stderr, 'recieved "%s"' % data
 
 main()

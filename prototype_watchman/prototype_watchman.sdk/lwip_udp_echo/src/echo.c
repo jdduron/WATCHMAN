@@ -129,7 +129,6 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
         	p->payload = command_buffer[i];
         	p->len = strlen(command_buffer[i]);
         	p->tot_len = strlen(command_buffer[i]);
-        	print("Hello\n");
     		udp_sendto(pcb, p, addr, port);
  		}
 
