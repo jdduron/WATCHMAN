@@ -79,7 +79,8 @@ def get_commands(parser):
         all_commands = all_commands.strip()
 
     #include the packet length and return back to main
-    payload = str(packet_length) + delimiter + all_commands  + 'end'
+    payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands #payload with header, without checksum and 'end'
+    #    checksum =
     print payload;
     return payload;
 
