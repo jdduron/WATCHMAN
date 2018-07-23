@@ -92,10 +92,9 @@ def main():
     sock.sendto(length_and_commands, (UDP_IP, UDP_PORT))
 
     recv_flag = 0
-    # while (recv_flag != -1):
-#    while(recv_flag < 5):
-    data, server = sock.recvfrom(8192)
-    print >>sys.stderr, 'recieved "%s"' % data
-#	recv_flag = recv_flag + 1
+    while (recv_flag != -1):
+        data, server = sock.recvfrom(8192)
+        
+        print >>sys.stderr, 'recieved "%s"' % data
 
 main()
