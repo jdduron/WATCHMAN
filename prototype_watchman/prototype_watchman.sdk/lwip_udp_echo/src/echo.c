@@ -116,6 +116,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	//Creates a buffer with parsed string commands from the payload
 
     	command_parser(p);
+
     	command_interpreter(command_buffer);
     	int count = 0;
 
