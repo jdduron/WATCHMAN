@@ -44,7 +44,7 @@
 
 u16_t RemotePort;
 struct ip_addr *RemoteAddr;
-struct udp_pcb send_pcb;
+struct udp_pcb *send_pcb;
 
 
 int transfer_data() {
@@ -120,23 +120,20 @@ void command_interpreter(char** command_buffer){
 void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
+//	send_pcb = pcb;
 
 
     if (p != NULL) {
-
-    	//An array of "strings" which holds individual commands and arguments from the payload
-    	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
     	command_parser(p);
-//    	char* test= "hello\n";
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
     		printf("%s\n", command_buffer[i]);
     	}
-//
+
 //    	for(int i = 0; i < 5; i++){
     		udp_sendto(pcb, p, addr, port);
-//    }
+// 		}
 
     	//Send buffer of commands into command interpreter
     	/* send received packet back to sender */
