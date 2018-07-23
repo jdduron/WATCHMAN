@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "cmd_parser.h"
+#include "cmd_interpreter.h"
 
 #include "lwip/err.h"
 //#include "lwip/tcp.h"
@@ -108,14 +109,7 @@ void print_app_header()
 
 
 
-void command_interpreter(char** command_buffer){
 
-		printf("Command Interpreter ???\n");
-
-//        udp_sendto(pcb, p, addr, port);
-        /* free the pbuf */
-//        pbuf_free(p);
-}
 
 void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
@@ -127,7 +121,9 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	//An array of "strings" which holds individual commands and arguments from the payload
     	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
+
     	command_parser(p);
+    	command_interpreter(cmd_buffer);
 //    	char* test= "hello\n";
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
