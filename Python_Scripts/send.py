@@ -1,5 +1,5 @@
-##############################################################################
 #!/usr/bin/env python
+############################################################################
 #Author: Ky Ho, Jose Duron
 #Date:7/18/19
 # Main ETHERNET Module to Send and Recieve UDP DATAGRAMS to MICROZED
@@ -7,7 +7,7 @@
 #This module uses a fixed IP address and port number that must match the
 #IP address of the MICROZED. This module restricts the sent packages to be
 #predefined commands: ping, read, rite, send, and exit.
-# ############################################################################
+##############################################################################
 import sys
 import socket
 import optparse
@@ -79,7 +79,8 @@ def get_commands(parser):
         all_commands = all_commands.strip()
 
     #include the packet length and return back to main
-    payload = str(packet_length) + delimiter + all_commands  + 'end'
+    payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands + 'end' #payload with header, without checksum and 'end'
+    #    checksum = testing 1 2
     print payload;
     return payload;
 
@@ -92,10 +93,11 @@ def main():
     sock.sendto(length_and_commands, (UDP_IP, UDP_PORT))
 
     recv_flag = 0
-    # while (recv_flag != -1):
-#    while(recv_flag < 5):
-    data, server = sock.recvfrom(8192)
-    print >>sys.stderr, 'recieved "%s"' % data
-#	recv_flag = recv_flag + 1
+
+    while (recv_flag != -1):
+        data, server = sock.recvfrom(8192)
+        if(data == 'end'):
+            recv_flag = -1;
+        print >>sys.stderr, 'recieved "%s"' % data
 
 main()
