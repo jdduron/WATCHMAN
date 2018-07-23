@@ -93,9 +93,9 @@ def main():
 
     recv_flag = 0
     # while (recv_flag != -1):
-    while(recv_flag < 5):
-    	data, server = sock.recvfrom(8192)
-    	print >>sys.stderr, 'recieved "%s"' % data
-	recv_flag = recv_flag + 1
+#    while(recv_flag < 5):
+    data, server = sock.recvfrom(8192)
+    print >>sys.stderr, 'recieved "%s"' % data
+#	recv_flag = recv_flag + 1
 
 main()
