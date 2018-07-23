@@ -114,20 +114,19 @@ void print_app_header()
 void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
-//	send_pcb = pcb;
-
+	send_pcb = pcb;
+	RemoteAddr = addr;
+	RemotePort= port;
 
     if (p != NULL) {
     	//Creates a buffer with parsed string commands from the payload
 
     	command_parser(p);
     	command_interpreter(command_buffer);
-//    	char* test= "hello\n";
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
     		printf("%s\n", command_buffer[i]);
     	}
-    	printf("Hello\n");
 //    	for(int i = 0; i < 5; i++){
     		udp_sendto(pcb, p, addr, port);
 // 		}
