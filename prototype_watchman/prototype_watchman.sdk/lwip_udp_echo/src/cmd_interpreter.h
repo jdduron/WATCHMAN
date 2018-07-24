@@ -13,7 +13,7 @@
 #include "lwip/udp.h"
 #include "xil_printf.h"
 
-void command_interpreter(char** command_buffer);
+void command_interpreter(char** command_buffer, int** regmap);
 
 #endif /* SRC_CMD_INTERPRETER_H_ */
 

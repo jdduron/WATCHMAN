@@ -7,6 +7,7 @@ void command_parser(struct pbuf *p){
 
 	//Tokenize the string using delimiter
 	char* token = strtok(payload, delimiter);
+//	char **command_buffer[MAX_ARRAY_SIZE];
 	command_buffer[cmd_buf_size] = token;
 	cmd_buf_size++;
 
