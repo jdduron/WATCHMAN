@@ -47,7 +47,7 @@ u16_t RemotePort;
 struct ip_addr *RemoteAddr;
 struct udp_pcb send_pcb;
 
-extern int regmap[10]={0,1,2,3,4,5,6,7,8,9};
+extern int regmap[10]={100,101,102,103,104,105,106,107,108,109};
 
 int transfer_data() {
 	return 0;
