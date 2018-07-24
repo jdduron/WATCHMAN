@@ -43,7 +43,11 @@
 #include "xil_printf.h"
 #endif
 
-int command_buffer_size = 0;
+u16_t RemotePort;
+struct ip_addr *RemoteAddr;
+struct udp_pcb send_pcb;
+
+extern int regmap[10]={0,1,2,3,4,5,6,7,8,9};
 
 int transfer_data() {
 	return 0;
@@ -112,12 +116,16 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
 
+
     if (p != NULL) {
+
+    	//An array of "strings" which holds individual commands and arguments from the payload
+    	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
 
     	command_parser(p);
+    	command_interpreter(cmd_buffer, regmap);
 
-    	command_interpreter(command_buffer);
     	int count = 0;
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
@@ -131,10 +139,6 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
         	p->tot_len = strlen(command_buffer[i]);
     		udp_sendto(pcb, p, addr, port);
  		}
-
-    	//Send buffer of commands into command interpreter
-    	/* send received packet back to sender */
-        pbuf_free(p);
 
     }
 }

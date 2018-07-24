@@ -65,11 +65,19 @@ def get_commands(parser):
             packet_length += 2;
 
         #Read or Rite
-        elif options.command == "read" or options.command == "rite":
-            options.message = raw_input('Enter a message to send: ');
+        elif options.command == "rite":
+            options.message = raw_input('Enter reg address: ');
+            all_commands = all_commands + options.command + delimiter + options.message + delimiter
+            options.message = raw_input('Enter reg value:')
+            packet_length += 4;
+            options.message = options.message.strip()
+	    all_commands = all_commands + options.message + delimiter
+
+        elif options.command == "read":
+            options.message = raw_input('Enter reg address: ');
             packet_length += 3;
             options.message = options.message.strip()
-	    all_commands = all_commands + options.command + delimiter + options.message + delimiter
+	    all_commands = all_commands + options.message + delimiter
 
         #Invalid command
         else:
@@ -80,7 +88,7 @@ def get_commands(parser):
 
     #include the packet length and return back to main
     payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands + 'end' #payload with header, without checksum and 'end'
-    #    checksum = testing 1 2 3 4 
+    #    checksum = testing 1 2 3 4
     print payload;
     return payload;
 
