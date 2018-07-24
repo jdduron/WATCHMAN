@@ -77,7 +77,7 @@ def get_commands(parser):
             options.message = raw_input('Enter reg address: ');
             packet_length += 3;
             options.message = options.message.strip()
-	    all_commands = all_commands + options.message + delimiter
+	    all_commands = all_commands + options.command + delimiter + options.message + delimiter
 
         #Invalid command
         else:
@@ -87,7 +87,7 @@ def get_commands(parser):
         all_commands = all_commands.strip()
 
     #include the packet length and return back to main
-    payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands + 'end' #payload with header, without checksum and 'end'
+    payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands + 'end' + delimiter #payload with header, without checksum and 'end'
     #    checksum = testing 1 2 3 4
     print payload;
     return payload;
