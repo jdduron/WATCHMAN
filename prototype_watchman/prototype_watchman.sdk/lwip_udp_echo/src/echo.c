@@ -129,7 +129,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	int count = 0;
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
-    		printf("%s\n", command_buffer[i]);
+    		printf("Inside command_buffer[%d]: %s\n", i, command_buffer[i]);
     		count++;
     	}
 
@@ -139,6 +139,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
         	p->tot_len = strlen(command_buffer[i]);
     		udp_sendto(pcb, p, addr, port);
  		}
+    	printf("###########END###########\n");
 
     }
 }
