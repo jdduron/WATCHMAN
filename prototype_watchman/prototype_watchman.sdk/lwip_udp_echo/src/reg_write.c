@@ -6,10 +6,13 @@
  */
 #include "reg_write.h"
 
-int reg_write(int read_addr, int reg_value, int** regmap){
+int reg_write(int write_addr, int reg_value, int** regmap){
 
 		printf("reg_write! \n");
-//		regmag[write_addr]=reg_value;
+		if (write_addr < 9 && write_addr > -1){
+		regmap[write_addr]=reg_value;
+		printf("reg: %d value: %d \n", write_addr, regmap[write_addr]);
+		}
 		return 0;
 //	return regmap[read_addr];
 }
