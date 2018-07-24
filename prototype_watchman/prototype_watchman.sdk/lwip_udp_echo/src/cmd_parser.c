@@ -1,6 +1,9 @@
 #include "cmd_parser.h"
+#include "reg_read.h"
+#include "reg_write.h"
+#include <stdlib.h>
 
-void command_parser(struct pbuf *p){
+void command_parser(struct pbuf *p, int** regmap){
 	char* payload = p->payload;
 	int cmd_buf_size = 0;
 	const char delimiter[2] = "/";
@@ -18,10 +21,42 @@ void command_parser(struct pbuf *p){
 		cmd_buf_size++;
 	}
 
-	for(int i = 0; i < cmd_buf_size; i++){
-		printf("%s\n", command_buffer[i]);
-	}
 	command_buffer[cmd_buf_size] = NULL;
+
+	for(int i = 2; i < cmd_buf_size-2; i++){
+
+		printf("this: %s\n", command_buffer[i]);
+		if(strcmp(command_buffer[i],"ping") == 0){
+			printf("pong\n");
+		}
+		else if(strcmp(command_buffer[i],"read") == 0){
+			printf("read!\n");
+			i++;
+		}
+		else if(strcmp(command_buffer[i],"rite") == 0){
+			printf("rite!\n");
+			i+=2;
+		}
+		else{
+			printf("%s is not a valid command\n", command_buffer[i]);
+		}
+//		   switch(command_buffer[i][3]!= NULL) {
+//		      case 'g' :
+//		         printf("pong!\n" );
+//		         break;
+//		      case 'd' :
+//		    	  printf("read\n");
+//		    	  //reg_read( i+1, regmap );
+//		    	  i=i++;
+//		      case 'e' :
+//		    	  printf("rite\n");
+//		    	  //reg_write( i+1, i+2, regmap );
+//		         break;
+//
+//		      default :
+//		         printf("command not found\n" );
+//		   }
+	}
 
 //	return command_buffer;
 

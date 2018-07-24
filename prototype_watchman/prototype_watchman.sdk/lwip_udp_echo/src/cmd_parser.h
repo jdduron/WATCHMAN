@@ -7,4 +7,4 @@
 
 char** command_buffer[MAX_ARRAY_SIZE];
 
-void command_parser(struct pbuf *p);
+void command_parser(struct pbuf *p, int** regmap);

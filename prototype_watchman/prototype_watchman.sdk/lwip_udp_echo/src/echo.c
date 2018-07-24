@@ -123,13 +123,13 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
 
-    	command_parser(p);
-    	command_interpreter(cmd_buffer, regmap);
+    	command_parser(p, regmap);
+    	//command_interpreter(cmd_buffer, regmap);
 
     	int count = 0;
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
-    		printf("%s\n", command_buffer[i]);
+    		printf("Inside command_buffer[%d]: %s\n", i, command_buffer[i]);
     		count++;
     	}
 
@@ -139,6 +139,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
         	p->tot_len = strlen(command_buffer[i]);
     		udp_sendto(pcb, p, addr, port);
  		}
+    	printf("###########END###########\n");
 
     }
 }

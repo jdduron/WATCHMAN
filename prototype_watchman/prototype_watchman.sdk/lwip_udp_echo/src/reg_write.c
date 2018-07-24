@@ -6,7 +6,7 @@
  */
 #include "reg_write.h"
 
-int reg_write(int read_addr, int reg_value){
+int reg_write(int read_addr, int reg_value, int** regmap){
 
 		printf("reg_write! \n");
 //		regmag[write_addr]=reg_value;
