@@ -14,6 +14,6 @@
 #include "lwip/udp.h"
 #include "xil_printf.h"
 
-int reg_read(int read_addr, int** regmap);
+int reg_read(int read_addr, int* regmap);
 
 #endif /* SRC_REG_READ_H_ */

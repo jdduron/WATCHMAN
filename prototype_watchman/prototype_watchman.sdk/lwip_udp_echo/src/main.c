@@ -227,23 +227,46 @@ int main()
 	print_ip_settings(&ipaddr, &netmask, &gw);
 
 #endif
+
 	/* start the application (web server, rxtest, txtest, etc..) */
 	start_application();
+	int count = 0;
+	int potatoCounter = 0;
+
+	struct udp_pcb *pcb;
+	err_t err;
+	unsigned port = 7;
+	unsigned pc_port = 7;
+
+	/* create new UDP PCB structure */
+	pcb = udp_new();
+	err = udp_bind(pcb, IP_ADDR_ANY, port);
+	err = udp_connect(pcb, &(echo_netif->ip_addr), pc_port);
+
+	unsigned char* buffer = "Hello\n";
+	struct pbuf *p;
+	p = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
+	p->payload = buffer;
 
 	/* receive and process packets */
 	while (1) {
-//		if (TcpFastTmrFlag) {
-//			tcp_fasttmr();
-//			TcpFastTmrFlag = 0;
-//		}
-//		if (TcpSlowTmrFlag) {
-//			tcp_slowtmr();
-//			TcpSlowTmrFlag = 0;
-//		}
+
 		xemacif_input(echo_netif);
 		transfer_data();
+
+		if(count < 10000000) count++;
+		else{
+//			printf("Counter: %d\n", count);
+			potatoCounter++;
+			printf("Potato Counter: %d\n", potatoCounter);
+			count = 0;
+
+		}
+		printf("Helloooooo\n");
+		udp_sendto(pcb, p, &ipaddr, port);
 	}
-  
+
+
 	/* never reached */
 	cleanup_platform();
 

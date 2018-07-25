@@ -6,7 +6,7 @@
  */
 #include "reg_write.h"
 
-int reg_write(int write_addr, int reg_value, int** regmap){
+int reg_write(int write_addr, int reg_value, int* regmap){
 
 		printf("reg_write! \n");
 		if (write_addr < 9 && write_addr > -1){
