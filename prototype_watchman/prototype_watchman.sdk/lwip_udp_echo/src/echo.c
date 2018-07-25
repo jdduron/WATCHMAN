@@ -43,11 +43,14 @@
 #include "xil_printf.h"
 #endif
 
-u16_t RemotePort;
-struct ip_addr *RemoteAddr;
-struct udp_pcb send_pcb;
+struct udp_pcb * send_pcb;
+struct pbuf * send_p;
+struct ip_addr * send_addr;
+u16_t send_port;
 
 extern int regmap[10]={100,101,102,103,104,105,106,107,108,109};
+
+
 
 int transfer_data() {
 	return 0;
@@ -116,11 +119,13 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
 
+	send_pcb = pcb;
+	send_p = p;
+	send_addr = addr;
+	send_port = port;
 
     if (p != NULL) {
 
-    	//An array of "strings" which holds individual commands and arguments from the payload
-    	char** cmd_buffer;
     	//Creates a buffer with parsed string commands from the payload
 
     	command_parser(p, regmap);
@@ -139,9 +144,20 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
         	p->tot_len = strlen(command_buffer[i]);
     		udp_sendto(pcb, p, addr, port);
  		}
+
     	printf("###########END###########\n");
 
     }
+
+}
+
+void udp_echo_send()
+{
+		send_p->payload = "hello\n";
+		send_p->tot_len = 7;
+		send_p->len = 7;
+		udp_sendto(send_pcb, send_p, send_addr, send_port);
+
 }
 
 
@@ -177,9 +193,11 @@ int start_application()
 //
 //	/* specify callback to use for incoming connections */
 //	tcp_accept(pcb, accept_callback);
+
 	udp_recv(pcb, udp_echo_recv, NULL);
 
 	xil_printf("UDP echo server started @ port %d\n\r", port);
+
 
 	return 0;
 }

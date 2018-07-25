@@ -3,14 +3,14 @@
 #include "reg_write.h"
 #include <stdlib.h>
 
-void command_parser(struct pbuf *p, int** regmap){
+void command_parser(struct pbuf *p, int* regmap){
 	char* payload = p->payload;
 	int cmd_buf_size = 0;
 	const char delimiter[2] = "/";
 
 	//Tokenize the string using delimiter
 	char* token = strtok(payload, delimiter);
-//	char **command_buffer[MAX_ARRAY_SIZE];
+
 	command_buffer[cmd_buf_size] = token;
 	cmd_buf_size++;
 	int a,b;
@@ -32,14 +32,14 @@ void command_parser(struct pbuf *p, int** regmap){
 		else if(strcmp(command_buffer[i],"read") == 0){
 
 			a=strtol(command_buffer[i+1],NULL,10);
-			reg_read( a, regmap );
+			reg_read(a, regmap);
 			i++;
 		}
 		else if(strcmp(command_buffer[i],"rite") == 0){
 
 			a=strtol(command_buffer[i+1],NULL,10);
 			b=strtol(command_buffer[i+2],NULL,10);
-			reg_write(a, b, regmap );
+			reg_write(a, b, regmap);
 			i+=2;
 		}
 		else{

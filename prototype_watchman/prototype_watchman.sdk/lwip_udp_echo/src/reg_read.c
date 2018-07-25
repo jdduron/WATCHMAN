@@ -1,6 +1,6 @@
 #include "reg_read.h"
 
-int reg_read(int read_addr, int** regmap){
+int reg_read(int read_addr, int* regmap){
 
 		printf("reg_read! \n");
 
