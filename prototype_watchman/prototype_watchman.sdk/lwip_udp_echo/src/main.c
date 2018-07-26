@@ -125,10 +125,28 @@ int IicPhyReset(void);
 #endif
 #endif
 
+void udp_test_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
+					ip_addr *addr, u16_t port)
+{
+	if (p != NULL) {
+
+		p->payload = "Hello\n";
+		p->tot_len = 7;
+		p->len = 7;
+		int count = 0;
+		while(count < 1000000000){
+			if(count % 100 == 0) udp_sendto(pcb, p, addr, port);
+			count++;
+		}
+
+	}
+}
+
+
 int main()
 {
 #if LWIP_IPV6==0
-	ip_addr_t ipaddr, netmask, gw;
+	ip_addr_t ipaddr, netmask, gw, pc_ipaddr;
 
 #endif
 	/* the mac address of the board. this should be unique per board */
@@ -216,6 +234,7 @@ int main()
 			IP4_ADDR(&(echo_netif->ip_addr),  192, 168,   1, 10);
 			IP4_ADDR(&(echo_netif->netmask), 255, 255, 255,  0);
 			IP4_ADDR(&(echo_netif->gw),      192, 168,   1,  1);
+			IP4_ADDR(&pc_ipaddr,			 192, 168,   1, 11 );
 		}
 	}
 
@@ -234,36 +253,55 @@ int main()
 	int potatoCounter = 0;
 
 	struct udp_pcb *pcb;
-	err_t err;
-	unsigned port = 7;
-	unsigned pc_port = 7;
 
 	/* create new UDP PCB structure */
-	pcb = udp_new();
-	err = udp_bind(pcb, IP_ADDR_ANY, port);
-	err = udp_connect(pcb, &(echo_netif->ip_addr), pc_port);
-
-	unsigned char* buffer = "Hello\n";
+//	pcb = udp_new();
+//	udp_bind(pcb, IP_ADDR_ANY, 8);
+//
+	char* buffer = "Hello\n";
 	struct pbuf *p;
 	p = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
 	p->payload = buffer;
+	p->tot_len = 7;
+	p->len = 7;
 
+	err_t err;
+	unsigned port = 8;
+
+	/* create new TCP PCB structure */
+	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);
+	if (!pcb) {
+		xil_printf("Error creating PCB. Out of Memory\n\r");
+		return -1;
+	}
+
+	/* bind to specified @port */
+	err = udp_bind(pcb, IP_ANY_TYPE, port);
+	err = udp_connect(pcb, &pc_ipaddr, port);
+	if (err != ERR_OK) {
+		xil_printf("Unable to bind to port %d: err = %d\n\r", port, err);
+		return -2;
+	}
+
+//
+//	udp_recv(pcb, udp_test_recv, NULL);
 	/* receive and process packets */
 	while (1) {
 
 		xemacif_input(echo_netif);
 		transfer_data();
+		udp_send(pcb, p);
+//		if(count < 10000000) count++;
+//		else{
+////			printf("Counter: %d\n", count);
+////			potatoCounter++;
+////			printf("Potato Counter: %d\n", potatoCounter);
+//			count = 0;
+//
+//		}
+	//	printf("Helloooooo\n");
+//		udp_sendto(pcb, p, addr, 8);
 
-		if(count < 10000000) count++;
-		else{
-//			printf("Counter: %d\n", count);
-			potatoCounter++;
-			printf("Potato Counter: %d\n", potatoCounter);
-			count = 0;
-
-		}
-		printf("Helloooooo\n");
-		udp_sendto(pcb, p, &ipaddr, port);
 	}
 
 
