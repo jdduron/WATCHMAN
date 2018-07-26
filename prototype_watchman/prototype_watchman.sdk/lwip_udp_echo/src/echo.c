@@ -53,6 +53,8 @@ extern int regmap[10]={100,101,102,103,104,105,106,107,108,109};
 
 
 int transfer_data() {
+
+
 	return 0;
 }
 
@@ -118,11 +120,6 @@ void print_app_header()
 void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 					ip_addr *addr, u16_t port)
 {
-
-	send_pcb = pcb;
-	send_p = p;
-	send_addr = addr;
-	send_port = port;
 
     if (p != NULL) {
 
