@@ -59,6 +59,7 @@
 /* defined by each RAW mode application */
 void print_app_header();
 int start_application();
+struct udp_pcb * setup_send_data(struct udp_pcb * pcb ,ip_addr_t pc_ipaddr);
 int transfer_data();
 void tcp_fasttmr(void);
 void tcp_slowtmr(void);
@@ -125,10 +126,28 @@ int IicPhyReset(void);
 #endif
 #endif
 
+void udp_test_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
+					ip_addr *addr, u16_t port)
+{
+	if (p != NULL) {
+
+		p->payload = "Hello\n";
+		p->tot_len = 7;
+		p->len = 7;
+		int count = 0;
+		while(count < 1000000000){
+			if(count % 100 == 0) udp_sendto(pcb, p, addr, port);
+			count++;
+		}
+
+	}
+}
+
+
 int main()
 {
 #if LWIP_IPV6==0
-	ip_addr_t ipaddr, netmask, gw;
+	ip_addr_t ipaddr, netmask, gw, pc_ipaddr;
 
 #endif
 	/* the mac address of the board. this should be unique per board */
@@ -216,6 +235,7 @@ int main()
 			IP4_ADDR(&(echo_netif->ip_addr),  192, 168,   1, 10);
 			IP4_ADDR(&(echo_netif->netmask), 255, 255, 255,  0);
 			IP4_ADDR(&(echo_netif->gw),      192, 168,   1,  1);
+			IP4_ADDR(&pc_ipaddr,			 192, 168,   1, 11 );
 		}
 	}
 
@@ -234,36 +254,31 @@ int main()
 	int potatoCounter = 0;
 
 	struct udp_pcb *pcb;
-	err_t err;
-	unsigned port = 7;
-	unsigned pc_port = 7;
 
 	/* create new UDP PCB structure */
-	pcb = udp_new();
-	err = udp_bind(pcb, IP_ADDR_ANY, port);
-	err = udp_connect(pcb, &(echo_netif->ip_addr), pc_port);
-
-	unsigned char* buffer = "Hello\n";
 	struct pbuf *p;
 	p = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-	p->payload = buffer;
+	p->payload = "Hello\n";
+	p->tot_len = 7;
+	p->len = 7;
+
+	pcb = setup_send_data(pcb ,pc_ipaddr);
 
 	/* receive and process packets */
 	while (1) {
 
 		xemacif_input(echo_netif);
 		transfer_data();
+		udp_send(pcb, p);
+//		if(count < 10000000) count++;
+//		else{
+////			printf("Counter: %d\n", count);
+////			potatoCounter++;
+////			printf("Potato Counter: %d\n", potatoCounter);
+//			count = 0;
+//
+//		}
 
-		if(count < 10000000) count++;
-		else{
-//			printf("Counter: %d\n", count);
-			potatoCounter++;
-			printf("Potato Counter: %d\n", potatoCounter);
-			count = 0;
-
-		}
-		printf("Helloooooo\n");
-		udp_sendto(pcb, p, &ipaddr, port);
 	}
 
 

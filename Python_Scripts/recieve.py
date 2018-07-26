@@ -27,9 +27,7 @@ def setup_connection():
 
 def main():
     sock = setup_connection()
-
-    #Send over the udp packet
-#    sock.sendto(length_and_commands, (UDP_IP, UDP_PORT))
+    sock.bind(("", UDP_PORT))
 
 #    recv_flag = 0
 
@@ -37,7 +35,7 @@ def main():
     while (1):
 
         data, server = sock.recvfrom(8192)
-        if(data == 'end'):
+#        if(data == 'end'):
 #            recv_flag = -1;
         print >>sys.stderr, 'recieved "%s"' % data
 

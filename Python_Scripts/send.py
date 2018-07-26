@@ -105,8 +105,8 @@ def main():
 
     recv_flag = 0
 
-#    while (recv_flag != -1):
-    while (1):
+    while (recv_flag != -1):
+#    while (1):
 
         data, server = sock.recvfrom(8192)
         if(data == 'end'):
