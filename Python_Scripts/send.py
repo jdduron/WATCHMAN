@@ -14,7 +14,10 @@ import optparse
 
 #define the IP and port for the zynq
 UDP_IP = "192.168.1.10"
-UDP_PORT = 7
+#UDP_IP = "192.168.1.10"
+UDP_PORT = 5001
+#UDP_PORT = 7
+
 
 delimiter = '/'
 
