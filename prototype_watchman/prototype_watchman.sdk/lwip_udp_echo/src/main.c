@@ -59,6 +59,7 @@
 /* defined by each RAW mode application */
 void print_app_header();
 int start_application();
+struct udp_pcb * setup_send_data(struct udp_pcb * pcb ,ip_addr_t pc_ipaddr);
 int transfer_data();
 void tcp_fasttmr(void);
 void tcp_slowtmr(void);
@@ -255,36 +256,14 @@ int main()
 	struct udp_pcb *pcb;
 
 	/* create new UDP PCB structure */
-//	pcb = udp_new();
-//	udp_bind(pcb, IP_ADDR_ANY, 8);
-//
-	char* buffer = "Hello\n";
 	struct pbuf *p;
 	p = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-	p->payload = buffer;
+	p->payload = "Hello\n";
 	p->tot_len = 7;
 	p->len = 7;
 
-	err_t err;
-	unsigned port = 8;
+	pcb = setup_send_data(pcb ,pc_ipaddr);
 
-	/* create new TCP PCB structure */
-	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);
-	if (!pcb) {
-		xil_printf("Error creating PCB. Out of Memory\n\r");
-		return -1;
-	}
-
-	/* bind to specified @port */
-	err = udp_bind(pcb, IP_ANY_TYPE, port);
-	err = udp_connect(pcb, &pc_ipaddr, port);
-	if (err != ERR_OK) {
-		xil_printf("Unable to bind to port %d: err = %d\n\r", port, err);
-		return -2;
-	}
-
-//
-//	udp_recv(pcb, udp_test_recv, NULL);
 	/* receive and process packets */
 	while (1) {
 
@@ -299,8 +278,6 @@ int main()
 //			count = 0;
 //
 //		}
-	//	printf("Helloooooo\n");
-//		udp_sendto(pcb, p, addr, 8);
 
 	}
 
