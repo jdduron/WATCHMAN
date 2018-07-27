@@ -9,6 +9,5 @@ int reg_read(int read_addr, int* regmap){
 		}
 
 
-		return 0;
-//	return regmap[read_addr];
+		return regmap[read_addr];
 }
