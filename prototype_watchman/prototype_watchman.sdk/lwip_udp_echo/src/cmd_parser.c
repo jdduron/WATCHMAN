@@ -48,6 +48,4 @@ void command_parser(struct pbuf *p, int* regmap){
 
 	}
 
-//	return command_buffer;
-
 }

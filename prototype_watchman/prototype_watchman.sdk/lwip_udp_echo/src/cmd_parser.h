@@ -5,6 +5,6 @@
 #define MAX_ARRAY_SIZE 100
 #include "xil_printf.h"
 
-char** command_buffer[MAX_ARRAY_SIZE];
+char* command_buffer[MAX_ARRAY_SIZE];
 
 void command_parser(struct pbuf *p, int* regmap);
