@@ -4,7 +4,6 @@
 #include "cmd_interpreter.h"
 
 #include "lwip/err.h"
-//#include "lwip/tcp.h"
 #include "lwip/udp.h"
 
 

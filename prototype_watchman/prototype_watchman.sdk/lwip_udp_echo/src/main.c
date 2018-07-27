@@ -258,11 +258,12 @@ int main()
 	/* create new UDP PCB structure */
 	struct pbuf *p;
 	p = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-	p->payload = "Hello\n";
-	p->tot_len = 7;
-	p->len = 7;
+	p->payload = "Hello";
+	p->tot_len = 5;
+	p->len = 5;
 
-	pcb = setup_send_data(pcb ,pc_ipaddr);
+	//Set up the connection @port 8
+	pcb = setup_send_data(pcb, pc_ipaddr);
 
 	/* receive and process packets */
 	while (1) {
@@ -270,14 +271,6 @@ int main()
 		xemacif_input(echo_netif);
 		transfer_data();
 		udp_send(pcb, p);
-//		if(count < 10000000) count++;
-//		else{
-////			printf("Counter: %d\n", count);
-////			potatoCounter++;
-////			printf("Potato Counter: %d\n", potatoCounter);
-//			count = 0;
-//
-//		}
 
 	}
 

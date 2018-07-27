@@ -36,20 +36,13 @@
 #include "cmd_interpreter.h"
 
 #include "lwip/err.h"
-//#include "lwip/tcp.h"
 #include "lwip/udp.h"
 #define MAX_ARRAY_SIZE 100
 #if defined (__arm__) || defined (__aarch64__)
 #include "xil_printf.h"
 #endif
 
-struct udp_pcb * send_pcb;
-struct pbuf * send_p;
-struct ip_addr * send_addr;
-u16_t send_port;
-
-extern int regmap[10]={100,101,102,103,104,105,106,107,108,109};
-
+int regmap[10]={100,101,102,103,104,105,106,107,108,109};
 
 
 int transfer_data() {
@@ -77,6 +70,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	int count = 0;
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
+    		printf("hello\n");
     		printf("Inside command_buffer[%d]: %s\n", i, command_buffer[i]);
     		count++;
     	}
