@@ -235,7 +235,6 @@ int main()
 			IP4_ADDR(&(echo_netif->ip_addr),  192, 168,   1, 10);
 			IP4_ADDR(&(echo_netif->netmask), 255, 255, 255,  0);
 			IP4_ADDR(&(echo_netif->gw),      192, 168,   1,  1);
-			IP4_ADDR(&pc_ipaddr,			 192, 168,   1, 11 );
 		}
 	}
 
@@ -247,6 +246,8 @@ int main()
 	print_ip_settings(&ipaddr, &netmask, &gw);
 
 #endif
+
+	IP4_ADDR(&pc_ipaddr,			 192, 168,   1, 11 );
 
 	/* start the application (web server, rxtest, txtest, etc..) */
 	start_application();

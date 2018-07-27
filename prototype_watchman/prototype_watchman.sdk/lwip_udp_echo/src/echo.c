@@ -65,12 +65,10 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	//Creates a buffer with parsed string commands from the payload
 
     	command_parser(p, regmap);
-    	//command_interpreter(cmd_buffer, regmap);
 
     	int count = 0;
 
     	for(int i = 0; command_buffer[i] != NULL; i++){
-    		printf("hello\n");
     		printf("Inside command_buffer[%d]: %s\n", i, command_buffer[i]);
     		count++;
     	}
