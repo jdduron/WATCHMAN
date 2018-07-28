@@ -16,6 +16,7 @@ import optparse
 UDP_IP = "192.168.1.10"
 UDP_PORT = 7
 
+
 delimiter = '/'
 
 #Creates the socket

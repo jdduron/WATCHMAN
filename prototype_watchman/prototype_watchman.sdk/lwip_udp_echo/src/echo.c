@@ -34,6 +34,7 @@
 #include <string.h>
 #include "cmd_parser.h"
 #include "cmd_interpreter.h"
+#include "reg_map.h"
 
 #include "lwip/err.h"
 #include "lwip/udp.h"
@@ -42,8 +43,7 @@
 #include "xil_printf.h"
 #endif
 
-int regmap[10]={100,101,102,103,104,105,106,107,108,109};
-
+//int* regmap = reg_map();
 
 int transfer_data() {
 
@@ -64,7 +64,8 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 
     	//Creates a buffer with parsed string commands from the payload
 
-    	command_parser(p, regmap);
+    	command_parser(p, reg_map());
+    	//command_parser(p, regmap);
 
     	int count = 0;
 
