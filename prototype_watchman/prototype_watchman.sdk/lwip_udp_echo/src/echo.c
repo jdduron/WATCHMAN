@@ -44,7 +44,7 @@
 #endif
 
 int* regmap;
-char *return_load[1000];
+char return_load[100000];
 
 int transfer_data() {
 
@@ -69,20 +69,23 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 
     	int count = 0;
 
-    	for(int i = 0; strcmp(return_buffer[i], "end"); i++){
-    		printf("Inside command_buffer[%d]: %s\n", i, return_buffer[i]);
-    		count++;
-    	}
+//    	for(int i = 0; strcmp(return_buffer[i], "end"); i++){
+//    		printf("Inside return_buffer[%d]: %s\n", i, return_buffer[i]);
+//    		count++;
+//    	}
     	printf("Inside command_buffer[%d]: %s\n", count, return_buffer[count]);
 
-//    	strcpy(str, )
-//    	for(int i = 0; i <= count; i++){
-//
-//    	}
+    	strcpy(return_load, return_buffer[0]);
+    	for(int i = 1; i <= count; i++){
+    		strcat(return_load, "/");
+    		strcat(return_load, return_buffer[i]);
+    		printf("Inside return_load: %s\n" , return_load);
+    	}
+    	printf("Length of load: %d\n", strlen(return_load));
 
-    	p->payload = return_buffer;
-    	p->len = count;
-    	p->tot_len = count;
+    	p->payload = return_load;
+    	p->len = strlen(return_load);
+    	p->tot_len = strlen(return_load);
 		udp_sendto(pcb, p, addr, port);
     	printf("###########END###########\n");
 

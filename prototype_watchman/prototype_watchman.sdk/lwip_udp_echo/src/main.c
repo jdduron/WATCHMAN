@@ -205,12 +205,12 @@ int main()
 	 * the predefined regular intervals after starting the client.
 	 */
 	dhcp_start(echo_netif);
-	dhcp_timoutcntr = 24;
+	dhcp_timoutcntr = 3;
 
-	while(((echo_netif->ip_addr.addr) == 0) && (dhcp_timoutcntr > 0))
-//		printf("Hello\n");
+	while(((echo_netif->ip_addr.addr) == 0) && (dhcp_timoutcntr > 0)) {
+		printf("Hello DHCP timer: %d\n", dhcp_timoutcntr);
 		xemacif_input(echo_netif);
-
+	}
 	if (dhcp_timoutcntr <= 0) {
 		if ((echo_netif->ip_addr.addr) == 0) {
 			xil_printf("DHCP Timeout\r\n");
