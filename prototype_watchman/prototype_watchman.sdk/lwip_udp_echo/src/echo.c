@@ -43,7 +43,7 @@
 #include "xil_printf.h"
 #endif
 
-int* regmap;
+int regmap[10];
 char return_load[100000];
 
 
@@ -103,7 +103,7 @@ int start_application()
 	err_t err;
 	unsigned port = 7;
 
-	regmap = reg_map();
+	reg_map(regmap);
 
 	/* create new TCP PCB structure */
 	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);
