@@ -2,7 +2,7 @@
 
 int reg_read(int read_addr, int* regmap){
 
-		printf("reg_read! \n");
+		printf("reading: \n");
 
 		if (read_addr < 9 && read_addr > -1){
 		printf("reg: %d value: %d \n", read_addr, regmap[read_addr]);

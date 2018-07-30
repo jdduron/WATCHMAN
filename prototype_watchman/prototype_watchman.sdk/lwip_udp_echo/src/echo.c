@@ -44,7 +44,9 @@
 #endif
 
 int* regmap;
+
 char *return_load[1000];
+
 
 int transfer_data() {
 
@@ -64,7 +66,9 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     if (p != NULL) {
 
     	//Creates a buffer with parsed string commands from the payload
+
 		strncpy(return_buffer[0], "head" , 4);
+
     	command_parser(p, regmap);
 
     	int count = 0;
@@ -96,6 +100,8 @@ int start_application()
 	struct udp_pcb *pcb;
 	err_t err;
 	unsigned port = 7;
+
+	regmap = reg_map();
 
 	/* create new TCP PCB structure */
 	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);
