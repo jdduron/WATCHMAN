@@ -55,7 +55,6 @@
 #endif
 
 
-
 /* defined by each RAW mode application */
 void print_app_header();
 int start_application();
@@ -125,23 +124,6 @@ int ProgramSfpPhy(void);
 int IicPhyReset(void);
 #endif
 #endif
-
-void udp_test_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
-					ip_addr *addr, u16_t port)
-{
-	if (p != NULL) {
-
-		p->payload = "Hello\n";
-		p->tot_len = 7;
-		p->len = 7;
-		int count = 0;
-		while(count < 1000000000){
-			if(count % 100 == 0) udp_sendto(pcb, p, addr, port);
-			count++;
-		}
-
-	}
-}
 
 
 int main()
@@ -226,6 +208,7 @@ int main()
 	dhcp_timoutcntr = 24;
 
 	while(((echo_netif->ip_addr.addr) == 0) && (dhcp_timoutcntr > 0))
+//		printf("Hello\n");
 		xemacif_input(echo_netif);
 
 	if (dhcp_timoutcntr <= 0) {
