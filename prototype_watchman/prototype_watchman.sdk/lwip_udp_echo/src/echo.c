@@ -44,7 +44,7 @@
 #endif
 
 int* regmap;
-char return_load[100000]
+char return_load[100000];
 
 
 int transfer_data() {
@@ -72,10 +72,10 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 
     	int count = 0;
 
-//    	for(int i = 0; strcmp(return_buffer[i], "end"); i++){
-//    		printf("Inside return_buffer[%d]: %s\n", i, return_buffer[i]);
-//    		count++;
-//    	}
+    	for(int i = 0; strcmp(return_buffer[i], "end"); i++){
+    		printf("Inside return_buffer[%d]: %s\n", i, return_buffer[i]);
+    		count++;
+    	}
     	printf("Inside command_buffer[%d]: %s\n", count, return_buffer[count]);
 
     	strcpy(return_load, return_buffer[0]);
@@ -118,7 +118,6 @@ int start_application()
 		xil_printf("Unable to bind to port %d: err = %d\n\r", port, err);
 		return -2;
 	}
-	regmap = reg_map();
 	udp_recv(pcb, udp_echo_recv, NULL);
 
 	xil_printf("UDP echo server started @ port %d\n\r", port);
