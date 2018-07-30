@@ -43,8 +43,8 @@
 #include "xil_printf.h"
 #endif
 
-int* regmap;
-char return_load[100000];
+int * regmap;
+char return_load[1000];
 
 
 int transfer_data() {
