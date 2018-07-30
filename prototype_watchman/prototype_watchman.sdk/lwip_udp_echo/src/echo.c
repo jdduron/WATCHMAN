@@ -43,7 +43,7 @@
 #include "xil_printf.h"
 #endif
 
-//int* regmap = reg_map();
+int* regmap;
 
 int transfer_data() {
 
@@ -64,8 +64,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 
     	//Creates a buffer with parsed string commands from the payload
 
-    	command_parser(p, reg_map());
-    	//command_parser(p, regmap);
+    	command_parser(p, regmap);
 
     	int count = 0;
 
@@ -93,6 +92,8 @@ int start_application()
 	struct udp_pcb *pcb;
 	err_t err;
 	unsigned port = 7;
+
+	regmap = reg_map();
 
 	/* create new TCP PCB structure */
 	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);
