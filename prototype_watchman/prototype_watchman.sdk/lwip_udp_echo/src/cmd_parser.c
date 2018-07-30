@@ -30,8 +30,9 @@ void command_parser(struct pbuf *p, int* regmap){
 		printf("this: %s\n", command_buffer[i]);
 		if(strcmp(command_buffer[i],"ping") == 0){
 			strncpy(return_buffer[index_send_buffer], "pong", 4);
+//			strncpy(return_buffer[index_send_buffer+1], delimiter, 2);
 			printf("return_buffer for ping: %s\n", return_buffer[index_send_buffer]);
-			index_send_buffer++;
+			index_send_buffer+= 1;
 		}
 		else if(strcmp(command_buffer[i],"read") == 0){
 			strncpy(return_buffer[index_send_buffer], "read", 4);
@@ -39,22 +40,33 @@ void command_parser(struct pbuf *p, int* regmap){
 			reg_addr=strtol(command_buffer[i+1],NULL,10);
 			itoa(reg_read(reg_addr, regmap), reg_val_string, 10);
 			strncpy(return_buffer[index_send_buffer+2], reg_val_string, 4);
+//			strncpy(return_buffer[index_send_buffer+3], delimiter, 2);
 			printf("return_buffer for read:\ncmd-%s \naddr:%s \nval:%s \n",
 					return_buffer[index_send_buffer], return_buffer[index_send_buffer+1] , return_buffer[index_send_buffer+2]);
 			index_send_buffer += 3;
 			i++;
 		}
 		else if(strcmp(command_buffer[i],"rite") == 0){
+			strncpy(return_buffer[index_send_buffer], "rite", 4);
+			strncpy(return_buffer[index_send_buffer+1], command_buffer[i+1], 100);
+			strncpy(return_buffer[index_send_buffer+2], command_buffer[i+2], 100);
+//			strncpy(return_buffer[index_send_buffer+3], delimiter, 2);
 
+			printf("return_buffer for rite:\ncmd-%s \naddr:%s \nval:%s \n",
+								return_buffer[index_send_buffer], return_buffer[index_send_buffer+1] , return_buffer[index_send_buffer+2]);
+			index_send_buffer += 3;
 			reg_addr=strtol(command_buffer[i+1],NULL,10);
 			reg_val=strtol(command_buffer[i+2],NULL,10);
 			reg_write(reg_addr, reg_val, regmap);
 			i+=2;
+
 		}
 		else{
 			printf("%s is not a valid command\n", command_buffer[i]);
 		}
 
 	}
+	itoa(index_send_buffer, return_buffer[1], 10);
+	strncpy(return_buffer[index_send_buffer], "end", 3);
 
 }
