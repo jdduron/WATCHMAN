@@ -17,7 +17,8 @@
 #define CHANNEL 4
 #define SAMPLE 4
 
-void data_test(int data[WINDOW][CHANNEL][SAMPLE]);
+void data_test(int data[CHANNEL][WINDOW][SAMPLE]);
+void data_format(int data[CHANNEL][WINDOW][SAMPLE], char stream[], int stream_size);
 
 
 

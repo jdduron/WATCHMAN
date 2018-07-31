@@ -49,7 +49,12 @@ int regmap[REGMAP_SIZE];
 char return_load[100000];
 
 
-int transfer_data() {
+int transfer_data(struct udp_pcb *potato_pcb, struct pbuf *potato, char stream[]) {
+
+	strncpy(potato->payload, stream, strlen(stream));
+	potato->tot_len = strlen(stream);
+	potato->len = strlen(stream);
+	udp_send(potato_pcb, potato);
 
 	return 0;
 }
