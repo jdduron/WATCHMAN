@@ -41,9 +41,23 @@ void command_parser(struct pbuf *p, int* regmap){
 			itoa(reg_read(reg_addr, regmap), reg_val_string, 10);
 			strncpy(return_buffer[index_send_buffer+2], reg_val_string, 4);
 //			strncpy(return_buffer[index_send_buffer+3], delimiter, 2);
-			printf("return_buffer for read:\ncmd-%s \naddr:%s \nval:%s \n",
+			printf("return_buffer for read:cmd: %s addr:%s val:%s \n",
 					return_buffer[index_send_buffer], return_buffer[index_send_buffer+1] , return_buffer[index_send_buffer+2]);
 			index_send_buffer += 3;
+			i++;
+		}
+		else if(strcmp(command_buffer[i],"rall") == 0){
+
+			strncpy(return_buffer[index_send_buffer], "rall", 4);
+			//strncpy(return_buffer[index_send_buffer+1], command_buffer[i+1], 100);
+			for(int a = 0; a<10; a++)
+				{
+				itoa(reg_read(a, regmap), reg_val_string, 10);
+				strncpy(return_buffer[index_send_buffer+1+a], reg_val_string, 4);
+				printf("return_buffer for read:cmd-%s [a]=%d addr:%s val:%s \n",
+				return_buffer[index_send_buffer+a], a, return_buffer[index_send_buffer+1+a] , return_buffer[index_send_buffer+2+a]);
+				}
+			index_send_buffer += 11;
 			i++;
 		}
 		else if(strcmp(command_buffer[i],"rite") == 0){

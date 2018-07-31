@@ -9,7 +9,7 @@
 int reg_write(int write_addr, int reg_value, int* regmap){
 
 		printf("reg_write! \n");
-		if (write_addr < 9 && write_addr > -1)
+		if (write_addr < 10 && write_addr > -1)
 		{
 			if ( reg_value >-1 && reg_value < 9999)
 			{
