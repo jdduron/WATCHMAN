@@ -65,6 +65,12 @@ def get_commands(parser):
 	    all_commands = all_commands + options.command + delimiter
             packet_length += 2;
 
+        #Read All - Reads All Registers
+        elif options.command == "rall":
+            options.message = ''
+	    all_commands = all_commands + options.command + delimiter
+            packet_length += 2;
+
         #Read or Rite
         elif options.command == "rite":
             options.message = raw_input('Enter reg address: ');

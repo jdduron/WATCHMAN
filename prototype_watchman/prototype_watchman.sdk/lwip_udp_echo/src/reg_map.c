@@ -10,7 +10,7 @@
 
 void reg_map(int regmap[]){
 
-		printf("reg_map created! \n");
+		printf("register map created! \n");
 
 
 for(int i = 0; i<10; i++)
