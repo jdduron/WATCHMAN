@@ -47,6 +47,8 @@
 #include "lwip/udp.h"
 #include "xil_cache.h"
 
+#define MAX_STREAM_SIZE 10000
+
 #if LWIP_IPV6==1
 #include "lwip/ip.h"
 #else
@@ -60,7 +62,7 @@
 void print_app_header();
 int start_application();
 struct udp_pcb * setup_send_data(struct udp_pcb * pcb ,ip_addr_t pc_ipaddr);
-int transfer_data();
+int transfer_data(struct udp_pcb *potato_pcb, struct pbuf *potato, char stream[]);
 void tcp_fasttmr(void);
 void tcp_slowtmr(void);
 
@@ -237,26 +239,26 @@ int main()
 	start_application();
 	int count = 0;
 	int potatoCounter = 0;
-	int data[10][10][10];
+	int data[CHANNEL][WINDOW][SAMPLE];
+	char stream[MAX_STREAM_SIZE];
+	//initialize data
 	data_test(data);
-	struct udp_pcb *pcb;
+	data_format(data, stream, MAX_STREAM_SIZE);
+	struct udp_pcb *potato_pcb;
 
 	/* create new UDP PCB structure */
-	struct pbuf *p;
-	p = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-	p->payload = "Hello";
-	p->tot_len = 5;
-	p->len = 5;
+	struct pbuf *potato;
+	potato = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
+	printf("the stream: %s length: %d\n", stream, strlen(stream));
 
 	//Set up the connection @port 8
-	pcb = setup_send_data(pcb, pc_ipaddr);
+	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
 
 	/* receive and process packets */
 	while (1) {
 
 		xemacif_input(echo_netif);
-		transfer_data();
-		udp_send(pcb, p);
+		transfer_data(potato_pcb, potato, stream);
 
 	}
 
