@@ -44,7 +44,7 @@
 #include "xil_printf.h"
 #endif
 
-int regmap[10];
+int regmap[REGMAP_SIZE];
 
 char return_load[100000];
 

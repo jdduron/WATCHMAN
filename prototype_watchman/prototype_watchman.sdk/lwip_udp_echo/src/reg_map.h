@@ -13,6 +13,8 @@
 #include "lwip/udp.h"
 #include "xil_printf.h"
 
+#define REGMAP_SIZE 10
+
 void reg_map(int regmap[]);
 
 #endif /* SRC_REG_MAP_H_ */

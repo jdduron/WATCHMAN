@@ -5,6 +5,8 @@ prototype_watchman/prototype_watchman.hw/
 prototype_watchman/prototype_watchman.runs/
 prototype_watchman/prototype_watchman.sdk/.metadata/
 prototype_watchman/prototype_watchman.sdk/.sdk/
+prototype_watchman/prototype_watchman.sdk/test_client/
+prototype_watchman/prototype_watchman.sdk/test_client_bsp/
 prototype_watchman/prototype_watchman.sdk/RemoteSystemsTempFiles/
 prototype_watchman/prototype_watchman.sdk/prototype_watchman_wrapper.hdf
 prototype_watchman/prototype_watchman.sdk/prototype_watchman_wrapper_hw_platform_0/

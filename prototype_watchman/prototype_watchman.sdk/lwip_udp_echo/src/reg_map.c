@@ -13,7 +13,7 @@ void reg_map(int regmap[]){
 		printf("register map created! \n");
 
 
-for(int i = 0; i<10; i++)
+for(int i = 0; i<REGMAP_SIZE; i++)
 	{
     	regmap[i]=10+i;
     }
