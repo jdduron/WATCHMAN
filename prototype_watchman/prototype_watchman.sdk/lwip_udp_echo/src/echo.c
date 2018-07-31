@@ -35,6 +35,7 @@
 #include "cmd_parser.h"
 #include "cmd_interpreter.h"
 #include "reg_map.h"
+#include "data_test.h"
 
 #include "lwip/err.h"
 #include "lwip/udp.h"
@@ -44,6 +45,7 @@
 #endif
 
 int regmap[10];
+
 char return_load[100000];
 
 

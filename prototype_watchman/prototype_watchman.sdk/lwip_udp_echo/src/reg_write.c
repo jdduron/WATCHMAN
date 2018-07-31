@@ -3,6 +3,11 @@
  *
  *  Created on: Jul 23, 2018
  *      Author: Jose Idlabs
+ *
+ * This function takes an integer for the address, a register value and the pointer corresponding to the beginning of the int array
+ * where the regmap is located. reg_write will overwrite the value of that register address with reg_value.
+ * Only register addresses 0-9 can be overwritten to prevent memory leaks.
+ * There is another check so that only int values from 0-9999 can be written.
  */
 #include "reg_write.h"
 
@@ -18,7 +23,6 @@ int reg_write(int write_addr, int reg_value, int* regmap){
 			}
 		}
 		return 0;
-//	return regmap[read_addr];
 }
 
 
