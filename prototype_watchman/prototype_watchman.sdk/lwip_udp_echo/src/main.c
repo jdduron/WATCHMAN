@@ -237,7 +237,7 @@ int main()
 	start_application();
 	int count = 0;
 	int potatoCounter = 0;
-	char data[10][10][10];
+	int data[10][10][10];
 	data_test(data);
 	struct udp_pcb *pcb;
 
