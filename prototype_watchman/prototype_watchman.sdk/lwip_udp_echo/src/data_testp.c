@@ -8,18 +8,18 @@
 #include "data_test.h"
 #include <stdio.h>
 
-void data_test(char data[10][10][10]){
+void data_test(int data[WINDOW][CHANNEL][SAMPLE]){
 
 	printf("data test pattern generated! \n");
 
-	for(int a = 0; a<4; a++)
+	for(int a = 0; a<WINDOW; a++)
 	{
-		for(int b = 0; b<4; b++)
+		for(int b = 0; b<CHANNEL; b++)
 		{
-			for(int c = 0; c<4; c++)
+			for(int c = 0; c<SAMPLE; c++)
 			{
-   	        	itoa(a+b+c, data[a][b][c],10); ;
-   	        	printf("data[%d][%d][%d]=%s\n", a,b,c, data[a][b][c]);
+				data[a][b][c] = c;
+				printf("data[%d][%d][%d]=%d\n", a,b,c, data[a][b][c]);
    	        }
    	    }
 	}

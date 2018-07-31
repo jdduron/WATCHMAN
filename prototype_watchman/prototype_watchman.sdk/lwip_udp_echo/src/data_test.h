@@ -13,7 +13,11 @@
 #include "lwip/udp.h"
 #include "xil_printf.h"
 
-void data_test(char data[10][10][10]);
+#define WINDOW 4
+#define CHANNEL 4
+#define SAMPLE 4
+
+void data_test(int data[WINDOW][CHANNEL][SAMPLE]);
 
 
 
