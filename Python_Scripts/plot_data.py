@@ -7,10 +7,15 @@
 #This module uses a fixed IP address and port number that must match the
 #IP address of the MICROZED. This module restricts the sent packages to be
 #predefined commands: ping, read, rite, send, and exit.
+#This module plots data
 ##############################################################################
 import sys
 import socket
 import optparse
+import matplotlib.pyplot as plt
+from matplotlib.ticker import NullFormatter  # useful for `logit` scale
+import numpy as np
+
 
 
 #define the IP and port for the zynq
@@ -27,6 +32,7 @@ def setup_connection():
     return sock
 
 def main():
+
     sock = setup_connection()
     sock.bind(("", UDP_PORT))
 
@@ -44,19 +50,55 @@ def main():
                 A=data[10:-3]
                 B = [int(x) for x in A.split('/') if x.strip()]
 
-
-        outfile = open('test3', 'w')
+        y = np.zeros([4,16], np.int32)
+        #outfile = open('test3', 'w')
         count=0
-        for x in range(0,4):
-            for y in range(0,4):
-                for z in range(0,4):
-                    print 'Outfile B[%d]= %d' % (count, B[count])
-                    outfile.write("%d " % (B[count]))
-                    count +=1
-        outfile.close()
+        for a in range(0,4):
+            for b in range(0,16):
+                y[a][b]=B[count]
+                count +=1
+ #       outfile.close()
         recv_flag =-1
 
 
+    # plot with various axes scales
+    plt.figure(1)
+    x = np.linspace(0, 15, 16)
+
+    # linear
+    plt.subplot(221)
+    plt.plot(x,y[0][:])
+    plt.title('CH0')
+    plt.grid(True)
+
+
+    # log
+    plt.subplot(222)
+    plt.plot(x,y[1][:])
+    plt.title('CH1')
+    plt.grid(True)
+
+
+    # symmetric log
+    plt.subplot(223)
+    plt.plot(x,y[2][:])
+    plt.title('CH2')
+    plt.grid(True)
+
+    # logit
+    plt.subplot(224)
+    plt.plot(x,y[3][:])
+    plt.title('CH3')
+    plt.grid(True)
+    # Format the minor tick labels of the y-axis into empty strings with
+    # `NullFormatter`, to avoid cumbering the axis with too many labels.
+    plt.gca().yaxis.set_minor_formatter(NullFormatter())
+    # Adjust the subplot layout, because the logit one may take more space
+    # than usual, due to y-tick labels like "1 - 10^{-3}"
+    plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
+                        wspace=0.35)
+
+    plt.show()
 
 
 main()
