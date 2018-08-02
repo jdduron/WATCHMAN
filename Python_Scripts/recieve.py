@@ -45,7 +45,7 @@ def main():
                 B = [int(x) for x in A.split('/') if x.strip()]
 
 
-        outfile = open('test3', 'w')
+        outfile = open('test3.txt', 'w')
         count=0
         for x in range(0,4):
             for y in range(0,4):
