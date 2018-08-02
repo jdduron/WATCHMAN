@@ -19,7 +19,7 @@ void data_test(int data[CHANNEL][WINDOW][SAMPLE]){
 			for(int c = 0; c<SAMPLE; c++)
 			{
 				data[a][b][c] = c;
-				printf("data[%d][%d][%d]=%d\n", a,b,c, data[a][b][c]);
+//				printf("data[%d][%d][%d]=%d\n", a,b,c, data[a][b][c]);
    	        }
    	    }
 	}
@@ -27,7 +27,7 @@ void data_test(int data[CHANNEL][WINDOW][SAMPLE]){
 
 void data_rand(int data[CHANNEL][WINDOW][SAMPLE]){
 
-	printf("data test pattern generated! \n");
+//	printf("data test pattern generated! \n");
 
 	for(int a = 0; a<CHANNEL; a++)
 	{
@@ -63,7 +63,7 @@ void data_format(int data[CHANNEL][WINDOW][SAMPLE], char stream[], int stream_si
 	}
 	strcat(stream, "/");
 	strcat(stream, "end");
-	printf("Inside stream: %s\n" , stream);
+//	printf("Inside stream: %s\n" , stream);
 
 
 }

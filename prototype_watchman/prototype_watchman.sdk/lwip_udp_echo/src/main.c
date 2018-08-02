@@ -57,6 +57,8 @@
 #endif
 #endif
 
+int data[CHANNEL][WINDOW][SAMPLE];
+char stream[MAX_STREAM_SIZE];
 
 /* defined by each RAW mode application */
 void print_app_header();
@@ -237,10 +239,6 @@ int main()
 
 	/* start the application (web server, rxtest, txtest, etc..) */
 	start_application();
-	int count = 0;
-	int potatoCounter = 0;
-	int data[CHANNEL][WINDOW][SAMPLE];
-	char stream[MAX_STREAM_SIZE];
 	//initialize data
 	data_test(data);
 	data_format(data, stream, MAX_STREAM_SIZE);
