@@ -46,11 +46,32 @@
 #include "xil_printf.h"
 #endif
 
+#define MAX_STREAM_SIZE 10000
+
 int regmap[REGMAP_SIZE];
+
+int data[CHANNEL][WINDOW][SAMPLE];
+int data_saw[CHANNEL][WINDOW][SAMPLE];
+char stream[MAX_STREAM_SIZE];
+
+struct udp_pcb *potato_pcb;
+struct pbuf *potato;
+
 char return_load[100000];
 
 
-int transfer_data(struct udp_pcb *potato_pcb, struct pbuf *potato, char stream[]) {
+int transfer_data(void) {
+
+	//Set up the connection @port 8
+	printf("regmap[0]: %d\n", regmap[0] );
+
+	if (regmap[0]==1){
+		data_format(data_saw, stream, MAX_STREAM_SIZE);
+	}
+	else if (regmap[0] != 1){
+		data_rand(data);
+		data_format(data, stream, MAX_STREAM_SIZE);
+	}
 
 	strncpy(potato->payload, stream, strlen(stream));
 	potato->tot_len = strlen(stream);
@@ -107,13 +128,21 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 }
 
 
-int start_application()
+int start_application(ip_addr_t pc_ipaddr)
 {
 	struct udp_pcb *pcb;
 	err_t err;
 	unsigned port = 7;
 
 	reg_map(regmap);
+	data_test(data_saw);
+	data_format(data_saw, stream, MAX_STREAM_SIZE);
+
+
+	/* create new UDP PCB structure */
+	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
+	potato = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
+	printf("the stream: %s length: %d\n", stream, strlen(stream));
 
 	/* create new TCP PCB structure */
 	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);

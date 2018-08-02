@@ -62,9 +62,9 @@ char stream[MAX_STREAM_SIZE];
 
 /* defined by each RAW mode application */
 void print_app_header();
-int start_application();
+int start_application(ip_addr_t pc_ipaddr);
 struct udp_pcb * setup_send_data(struct udp_pcb * pcb ,ip_addr_t pc_ipaddr);
-int transfer_data(struct udp_pcb *potato_pcb, struct pbuf *potato, char stream[]);
+int transfer_data(void);
 void tcp_fasttmr(void);
 void tcp_slowtmr(void);
 
@@ -238,27 +238,33 @@ int main()
 	IP4_ADDR(&pc_ipaddr,			 192, 168,   1, 11 );
 
 	/* start the application (web server, rxtest, txtest, etc..) */
-	start_application();
-	//initialize data
-	data_test(data);
-	data_format(data, stream, MAX_STREAM_SIZE);
-	struct udp_pcb *potato_pcb;
 
-	/* create new UDP PCB structure */
-	struct pbuf *potato;
-	potato = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-	printf("the stream: %s length: %d\n", stream, strlen(stream));
+	start_application(pc_ipaddr);
+	int count = 0;
+	int out_type=0;
+	int potatoCounter = 0;
+//	int data[CHANNEL][WINDOW][SAMPLE];
+//	int data_saw[CHANNEL][WINDOW][SAMPLE];
+//	char stream[MAX_STREAM_SIZE];
+//	//initialize data
+//	data_test(data_saw);
+//	data_format(data_saw, stream, MAX_STREAM_SIZE);
+//	struct udp_pcb *potato_pcb;
+//
+//	/* create new UDP PCB structure */
+//	struct pbuf *potato;
+//	potato = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
+//	printf("the stream: %s length: %d\n", stream, strlen(stream));
+//
+//	//Set up the connection @port 8
+//	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
 
-	//Set up the connection @port 8
-	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
 
 	/* receive and process packets */
 	while (1) {
 
-		data_rand(data);
-		data_format(data, stream, MAX_STREAM_SIZE);
 		xemacif_input(echo_netif);
-		transfer_data(potato_pcb, potato, stream);
+		transfer_data();
 
 	}
 
