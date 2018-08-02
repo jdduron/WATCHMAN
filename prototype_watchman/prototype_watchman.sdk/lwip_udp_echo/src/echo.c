@@ -37,6 +37,8 @@
 #include "reg_map.h"
 #include "data_test.h"
 
+#define MAX_STREAM_SIZE 10000
+
 #include "lwip/err.h"
 #include "lwip/udp.h"
 #define MAX_ARRAY_SIZE 100
@@ -47,7 +49,6 @@
 #define MAX_STREAM_SIZE 10000
 
 int regmap[REGMAP_SIZE];
-
 
 int data[CHANNEL][WINDOW][SAMPLE];
 int data_saw[CHANNEL][WINDOW][SAMPLE];
@@ -92,7 +93,9 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
 
     if (p != NULL) {
 
-    	//Creates a buffer with parsed string commands from the payload
+    	//reset each buffer before each use
+    	memset(return_buffer, 0, sizeof(return_buffer));
+     	memset(return_load, 0, sizeof(return_load));
 
 		strncpy(return_buffer[0], "head" , 4);
 

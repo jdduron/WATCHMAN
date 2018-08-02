@@ -88,3 +88,4 @@ void command_parser(struct pbuf *p, int* regmap){
 	strncpy(return_buffer[index_send_buffer], "end", 3);
 
 }
+
