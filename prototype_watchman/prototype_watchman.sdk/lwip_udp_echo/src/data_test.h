@@ -18,6 +18,7 @@
 #define SAMPLE 4
 
 void data_test(int data[CHANNEL][WINDOW][SAMPLE]);
+void data_rand(int data[CHANNEL][WINDOW][SAMPLE]);
 void data_format(int data[CHANNEL][WINDOW][SAMPLE], char stream[], int stream_size);
 
 

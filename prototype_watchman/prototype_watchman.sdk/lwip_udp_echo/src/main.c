@@ -257,6 +257,8 @@ int main()
 	/* receive and process packets */
 	while (1) {
 
+		data_rand(data);
+		data_format(data, stream, MAX_STREAM_SIZE);
 		xemacif_input(echo_netif);
 		transfer_data(potato_pcb, potato, stream);
 
