@@ -57,6 +57,8 @@
 #endif
 #endif
 
+int data[CHANNEL][WINDOW][SAMPLE];
+char stream[MAX_STREAM_SIZE];
 
 /* defined by each RAW mode application */
 void print_app_header();
@@ -236,6 +238,7 @@ int main()
 	IP4_ADDR(&pc_ipaddr,			 192, 168,   1, 11 );
 
 	/* start the application (web server, rxtest, txtest, etc..) */
+
 	start_application(pc_ipaddr);
 	int count = 0;
 	int out_type=0;
@@ -256,13 +259,12 @@ int main()
 //	//Set up the connection @port 8
 //	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
 
+
 	/* receive and process packets */
 	while (1) {
 
 		xemacif_input(echo_netif);
 		transfer_data();
-
-
 
 	}
 
