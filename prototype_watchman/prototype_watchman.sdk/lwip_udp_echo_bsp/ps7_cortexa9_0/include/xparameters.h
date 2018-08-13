@@ -27,10 +27,57 @@
 #define PLATFORM_ZYNQ
  
 /* Definitions for sleep timer configuration */
-#define XSLEEP_TIMER_IS_DEFAULT_TIMER
  
  
 /******************************************************************/
+/* Definitions for driver AXIDMA */
+#define XPAR_XAXIDMA_NUM_INSTANCES 1
+
+/* Definitions for peripheral AXI_DMA_0 */
+#define XPAR_AXI_DMA_0_DEVICE_ID 0
+#define XPAR_AXI_DMA_0_BASEADDR 0x40400000
+#define XPAR_AXI_DMA_0_HIGHADDR 0x4040FFFF
+#define XPAR_AXI_DMA_0_SG_INCLUDE_STSCNTRL_STRM 0
+#define XPAR_AXI_DMA_0_INCLUDE_MM2S_DRE 0
+#define XPAR_AXI_DMA_0_INCLUDE_S2MM_DRE 0
+#define XPAR_AXI_DMA_0_INCLUDE_MM2S 1
+#define XPAR_AXI_DMA_0_INCLUDE_S2MM 1
+#define XPAR_AXI_DMA_0_M_AXI_MM2S_DATA_WIDTH 32
+#define XPAR_AXI_DMA_0_M_AXI_S2MM_DATA_WIDTH 32
+#define XPAR_AXI_DMA_0_INCLUDE_SG 0
+#define XPAR_AXI_DMA_0_ENABLE_MULTI_CHANNEL 0
+#define XPAR_AXI_DMA_0_NUM_MM2S_CHANNELS 1
+#define XPAR_AXI_DMA_0_NUM_S2MM_CHANNELS 1
+#define XPAR_AXI_DMA_0_MM2S_BURST_SIZE 16
+#define XPAR_AXI_DMA_0_S2MM_BURST_SIZE 16
+#define XPAR_AXI_DMA_0_MICRO_DMA 0
+#define XPAR_AXI_DMA_0_ADDR_WIDTH 32
+
+
+/******************************************************************/
+
+/* Canonical definitions for peripheral AXI_DMA_0 */
+#define XPAR_AXIDMA_0_DEVICE_ID XPAR_AXI_DMA_0_DEVICE_ID
+#define XPAR_AXIDMA_0_BASEADDR 0x40400000
+#define XPAR_AXIDMA_0_SG_INCLUDE_STSCNTRL_STRM 0
+#define XPAR_AXIDMA_0_INCLUDE_MM2S 1
+#define XPAR_AXIDMA_0_INCLUDE_MM2S_DRE 0
+#define XPAR_AXIDMA_0_M_AXI_MM2S_DATA_WIDTH 32
+#define XPAR_AXIDMA_0_INCLUDE_S2MM 1
+#define XPAR_AXIDMA_0_INCLUDE_S2MM_DRE 0
+#define XPAR_AXIDMA_0_M_AXI_S2MM_DATA_WIDTH 32
+#define XPAR_AXIDMA_0_INCLUDE_SG 0
+#define XPAR_AXIDMA_0_ENABLE_MULTI_CHANNEL 0
+#define XPAR_AXIDMA_0_NUM_MM2S_CHANNELS 1
+#define XPAR_AXIDMA_0_NUM_S2MM_CHANNELS 1
+#define XPAR_AXIDMA_0_MM2S_BURST_SIZE 16
+#define XPAR_AXIDMA_0_S2MM_BURST_SIZE 16
+#define XPAR_AXIDMA_0_MICRO_DMA 0
+#define XPAR_AXIDMA_0_c_addr_width 32
+
+
+/******************************************************************/
+
 
 /* Definitions for peripheral PS7_DDR_0 */
 #define XPAR_PS7_DDR_0_S_AXI_BASEADDR 0x00100000
@@ -260,6 +307,18 @@
 #define XPAR_XQSPIPS_0_QSPI_MODE 0
 #define XPAR_XQSPIPS_0_QSPI_BUS_WIDTH 2
 
+
+/******************************************************************/
+
+/* Definitions for Fabric interrupts connected to ps7_scugic_0 */
+#define XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR 61U
+#define XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR 62U
+
+/******************************************************************/
+
+/* Canonical definitions for Fabric interrupts connected to ps7_scugic_0 */
+#define XPAR_FABRIC_AXIDMA_0_MM2S_INTROUT_VEC_ID XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR
+#define XPAR_FABRIC_AXIDMA_0_S2MM_INTROUT_VEC_ID XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR
 
 /******************************************************************/
 
