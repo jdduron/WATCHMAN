@@ -1,0 +1,20 @@
+*.jou
+*.log
+<<<<<<< HEAD
+prototype_watchman/prototype_watchman.cache/
+prototype_watchman/prototype_watchman.hw/
+prototype_watchman/prototype_watchman.runs/
+prototype_watchman/prototype_watchman.sdk/.metadata/
+prototype_watchman/prototype_watchman.sdk/.sdk/
+prototype_watchman/prototype_watchman.sdk/test_client/
+prototype_watchman/prototype_watchman.sdk/test_client_bsp/
+prototype_watchman/prototype_watchman.sdk/RemoteSystemsTempFiles/
+prototype_watchman/prototype_watchman.sdk/prototype_watchman_wrapper.hdf
+prototype_watchman/prototype_watchman.sdk/prototype_watchman_wrapper_hw_platform_0/
+prototype_watchman/prototype_watchman.sdk/webtalk/
+prototype_watchman/prototype_watchman.srcs/
+prototype_watchman/prototype_watchman.xpr
+mz_7010_dma_test/*
+=======
+>>>>>>> eb01463e83847acbcf8dcc9b36e3860d558d5631
+Python_Scripts/*.py~
