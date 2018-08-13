@@ -1,0 +1,375 @@
+#-----------------------------------------------------------
+# Vivado v2018.1 (64-bit)
+# SW Build 2188600 on Wed Apr  4 18:39:19 MDT 2018
+# IP Build 2185939 on Wed Apr  4 20:55:05 MDT 2018
+# Start of session at: Fri Jul  6 10:35:55 2018
+# Process ID: 4383
+# Current directory: /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1
+# Command line: vivado -log prototype_watchman_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source prototype_watchman_wrapper.tcl -notrace
+# Log file: /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper.vdi
+# Journal file: /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source prototype_watchman_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2018.1/data/ip'.
+Command: link_design -top prototype_watchman_wrapper -part xc7z010clg400-1
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Project 1-454] Reading design checkpoint '/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.srcs/sources_1/bd/prototype_watchman/ip/prototype_watchman_processing_system7_0_0/prototype_watchman_processing_system7_0_0.dcp' for cell 'prototype_watchman_i/processing_system7_0'
+INFO: [Project 1-479] Netlist was created with Vivado 2018.1
+INFO: [Device 21-403] Loading part xc7z010clg400-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.srcs/sources_1/bd/prototype_watchman/ip/prototype_watchman_processing_system7_0_0/prototype_watchman_processing_system7_0_0.xdc] for cell 'prototype_watchman_i/processing_system7_0/inst'
+Finished Parsing XDC File [/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.srcs/sources_1/bd/prototype_watchman/ip/prototype_watchman_processing_system7_0_0/prototype_watchman_processing_system7_0_0.xdc] for cell 'prototype_watchman_i/processing_system7_0/inst'
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+9 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+link_design completed successfully
+link_design: Time (s): cpu = 00:00:14 ; elapsed = 00:00:36 . Memory (MB): peak = 1594.117 ; gain = 346.762 ; free physical = 11347 ; free virtual = 29808
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z010'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 1594.117 ; gain = 0.000 ; free physical = 11341 ; free virtual = 29803
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: d85f7e0a
+
+Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.06 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 0 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: d85f7e0a
+
+Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.07 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Opt 31-389] Phase Constant propagation created 0 cells and removed 0 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 15e5045c2
+
+Time (s): cpu = 00:00:00.24 ; elapsed = 00:00:00.26 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 89 cells
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: 15e5045c2
+
+Time (s): cpu = 00:00:00.27 ; elapsed = 00:00:00.29 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Opt 31-389] Phase BUFG optimization created 0 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: 15e5045c2
+
+Time (s): cpu = 00:00:00.28 ; elapsed = 00:00:00.29 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: 15e5045c2
+
+Time (s): cpu = 00:00:00.29 ; elapsed = 00:00:00.30 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+Ending Logic Optimization Task | Checksum: 15e5045c2
+
+Time (s): cpu = 00:00:00.29 ; elapsed = 00:00:00.30 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 144f1a32c
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1954.668 ; gain = 0.000 ; free physical = 10951 ; free virtual = 29428
+INFO: [Common 17-83] Releasing license: Implementation
+25 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:13 ; elapsed = 00:00:31 . Memory (MB): peak = 1954.668 ; gain = 360.551 ; free physical = 10951 ; free virtual = 29428
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.14 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1986.684 ; gain = 0.004 ; free physical = 10940 ; free virtual = 29419
+INFO: [Common 17-1381] The checkpoint '/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper_opt.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_drc -file prototype_watchman_wrapper_drc_opted.rpt -pb prototype_watchman_wrapper_drc_opted.pb -rpx prototype_watchman_wrapper_drc_opted.rpx
+Command: report_drc -file prototype_watchman_wrapper_drc_opted.rpt -pb prototype_watchman_wrapper_drc_opted.pb -rpx prototype_watchman_wrapper_drc_opted.rpx
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper_drc_opted.rpt.
+report_drc completed successfully
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z010'
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1991.684 ; gain = 0.000 ; free physical = 10943 ; free virtual = 29422
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: ecb84c30
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.06 . Memory (MB): peak = 1991.684 ; gain = 0.000 ; free physical = 10943 ; free virtual = 29422
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1991.684 ; gain = 0.000 ; free physical = 10943 ; free virtual = 29421
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: ecb84c30
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1993.680 ; gain = 1.996 ; free physical = 10941 ; free virtual = 29420
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 1761cbf39
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2028.336 ; gain = 36.652 ; free physical = 10940 ; free virtual = 29420
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 1761cbf39
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2028.336 ; gain = 36.652 ; free physical = 10940 ; free virtual = 29420
+Phase 1 Placer Initialization | Checksum: 1761cbf39
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2028.336 ; gain = 36.652 ; free physical = 10940 ; free virtual = 29420
+
+Phase 2 Final Placement Cleanup
+Phase 2 Final Placement Cleanup | Checksum: 1761cbf39
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2028.336 ; gain = 36.652 ; free physical = 10940 ; free virtual = 29420
+INFO: [Place 30-281] No place-able instance is found; design doesn't contain any instance or all instances are placed
+Ending Placer Task | Checksum: ecb84c30
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2028.336 ; gain = 36.652 ; free physical = 10940 ; free virtual = 29420
+INFO: [Common 17-83] Releasing license: Implementation
+43 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.12 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2028.336 ; gain = 0.000 ; free physical = 10933 ; free virtual = 29416
+INFO: [Common 17-1381] The checkpoint '/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper_placed.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_io -file prototype_watchman_wrapper_io_placed.rpt
+report_io: Time (s): cpu = 00:00:00.14 ; elapsed = 00:00:00.17 . Memory (MB): peak = 2028.336 ; gain = 0.000 ; free physical = 10926 ; free virtual = 29407
+INFO: [runtcl-4] Executing : report_utilization -file prototype_watchman_wrapper_utilization_placed.rpt -pb prototype_watchman_wrapper_utilization_placed.pb
+report_utilization: Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.11 . Memory (MB): peak = 2028.336 ; gain = 0.000 ; free physical = 10932 ; free virtual = 29413
+INFO: [runtcl-4] Executing : report_control_sets -verbose -file prototype_watchman_wrapper_control_sets_placed.rpt
+report_control_sets: Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.10 . Memory (MB): peak = 2028.336 ; gain = 0.000 ; free physical = 10932 ; free virtual = 29413
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z010'
+Running DRC as a precondition to command route_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: 98566580 ConstDB: 0 ShapeSum: 5461e6b0 RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: dd5d116f
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2073.332 ; gain = 44.996 ; free physical = 10858 ; free virtual = 29339
+Post Restoration Checksum: NetGraph: 752172cc NumContArr: 683b9ea3 Constraints: 0 Timing: 0
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 2.1 Create Timer | Checksum: dd5d116f
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2089.332 ; gain = 60.996 ; free physical = 10852 ; free virtual = 29334
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: dd5d116f
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2102.332 ; gain = 73.996 ; free physical = 10838 ; free virtual = 29320
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: dd5d116f
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2102.332 ; gain = 73.996 ; free physical = 10838 ; free virtual = 29320
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: f1e72516
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2105.332 ; gain = 76.996 ; free physical = 10836 ; free virtual = 29318
+Phase 2 Router Initialization | Checksum: f1e72516
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2105.332 ; gain = 76.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 3 Initial Routing
+ Number of Nodes with overlaps = 0
+Phase 3 Initial Routing | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+Phase 4.1 Global Iteration 0 | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+Phase 4 Rip-up And Reroute | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+Phase 5.1 Delay CleanUp | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+Phase 5 Delay and Skew Optimization | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+Phase 6.1 Hold Fix Iter | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+Phase 6 Post Hold Fix | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 7 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0 %
+  Global Horizontal Routing Utilization  = 0 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 7 Route finalize | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2106.332 ; gain = 77.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 8 Verifying routed nets
+
+ Verification completed successfully
+Phase 8 Verifying routed nets | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2108.332 ; gain = 79.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 9 Depositing Routes
+Phase 9 Depositing Routes | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2108.332 ; gain = 79.996 ; free physical = 10835 ; free virtual = 29317
+
+Phase 10 Post Router Timing
+Phase 10 Post Router Timing | Checksum: 9afecd01
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2108.332 ; gain = 79.996 ; free physical = 10834 ; free virtual = 29316
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 2108.332 ; gain = 79.996 ; free physical = 10848 ; free virtual = 29331
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+56 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:00:14 ; elapsed = 00:00:12 . Memory (MB): peak = 2108.336 ; gain = 80.000 ; free physical = 10848 ; free virtual = 29331
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.14 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2116.340 ; gain = 0.004 ; free physical = 10839 ; free virtual = 29324
+INFO: [Common 17-1381] The checkpoint '/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper_routed.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_drc -file prototype_watchman_wrapper_drc_routed.rpt -pb prototype_watchman_wrapper_drc_routed.pb -rpx prototype_watchman_wrapper_drc_routed.rpx
+Command: report_drc -file prototype_watchman_wrapper_drc_routed.rpt -pb prototype_watchman_wrapper_drc_routed.pb -rpx prototype_watchman_wrapper_drc_routed.rpx
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper_drc_routed.rpt.
+report_drc completed successfully
+INFO: [runtcl-4] Executing : report_methodology -file prototype_watchman_wrapper_methodology_drc_routed.rpt -pb prototype_watchman_wrapper_methodology_drc_routed.pb -rpx prototype_watchman_wrapper_methodology_drc_routed.rpx
+Command: report_methodology -file prototype_watchman_wrapper_methodology_drc_routed.rpt -pb prototype_watchman_wrapper_methodology_drc_routed.pb -rpx prototype_watchman_wrapper_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 4 threads
+INFO: [Coretcl 2-1520] The results of Report Methodology are in file /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/prototype_watchman_wrapper_methodology_drc_routed.rpt.
+report_methodology completed successfully
+INFO: [runtcl-4] Executing : report_power -file prototype_watchman_wrapper_power_routed.rpt -pb prototype_watchman_wrapper_power_summary_routed.pb -rpx prototype_watchman_wrapper_power_routed.rpx
+Command: report_power -file prototype_watchman_wrapper_power_routed.rpt -pb prototype_watchman_wrapper_power_summary_routed.pb -rpx prototype_watchman_wrapper_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+68 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+INFO: [runtcl-4] Executing : report_route_status -file prototype_watchman_wrapper_route_status.rpt -pb prototype_watchman_wrapper_route_status.pb
+INFO: [runtcl-4] Executing : report_timing_summary -max_paths 10 -file prototype_watchman_wrapper_timing_summary_routed.rpt -pb prototype_watchman_wrapper_timing_summary_routed.pb -rpx prototype_watchman_wrapper_timing_summary_routed.rpx -warn_on_violation 
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max, Timing Stage: Requireds.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [runtcl-4] Executing : report_incremental_reuse -file prototype_watchman_wrapper_incremental_reuse_routed.rpt
+INFO: [Vivado_Tcl 4-545] No incremental reuse to report, no incremental placement and routing data was found.
+INFO: [runtcl-4] Executing : report_clock_utilization -file prototype_watchman_wrapper_clock_utilization_routed.rpt
+INFO: [runtcl-4] Executing : report_bus_skew -warn_on_violation -file route_report_bus_skew_0.rpt -rpx route_report_bus_skew_0.rpx
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max, Timing Stage: Requireds.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+Command: write_bitstream -force prototype_watchman_wrapper.bit
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z010'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z010'
+Running DRC as a precondition to command write_bitstream
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado 12-3199] DRC finished with 0 Errors
+INFO: [Vivado 12-3200] Please refer to the DRC report (report_drc) for more information.
+INFO: [Designutils 20-2272] Running write_bitstream with 4 threads.
+Loading data files...
+Loading site data...
+Loading route data...
+Processing options...
+Creating bitmap...
+Creating bitstream...
+Writing bitstream ./prototype_watchman_wrapper.bit...
+INFO: [Vivado 12-1842] Bitgen Completed Successfully.
+INFO: [Project 1-120] WebTalk data collection is mandatory when using a WebPACK part without a full Vivado license. To see the specific WebTalk data collected for your design, open the usage_statistics_webtalk.html or usage_statistics_webtalk.xml file in the implementation directory.
+INFO: [Common 17-186] '/home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/impl_1/usage_statistics_webtalk.xml' has been successfully sent to Xilinx on Fri Jul  6 10:39:59 2018. For additional details about this file, please refer to the WebTalk help file at /opt/Xilinx/Vivado/2018.1/doc/webtalk_introduction.html.
+INFO: [Common 17-83] Releasing license: Implementation
+87 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+write_bitstream completed successfully
+write_bitstream: Time (s): cpu = 00:00:11 ; elapsed = 00:02:20 . Memory (MB): peak = 2467.793 ; gain = 289.426 ; free physical = 10814 ; free virtual = 29306
+INFO: [Common 17-206] Exiting Vivado at Fri Jul  6 10:39:59 2018...
