@@ -243,22 +243,6 @@ int main()
 	int count = 0;
 	int out_type=0;
 	int potatoCounter = 0;
-//	int data[CHANNEL][WINDOW][SAMPLE];
-//	int data_saw[CHANNEL][WINDOW][SAMPLE];
-//	char stream[MAX_STREAM_SIZE];
-//	//initialize data
-//	data_test(data_saw);
-//	data_format(data_saw, stream, MAX_STREAM_SIZE);
-//	struct udp_pcb *potato_pcb;
-//
-//	/* create new UDP PCB structure */
-//	struct pbuf *potato;
-//	potato = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-//	printf("the stream: %s length: %d\n", stream, strlen(stream));
-//
-//	//Set up the connection @port 8
-//	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
-
 
 	/* receive and process packets */
 	while (1) {
