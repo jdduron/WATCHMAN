@@ -63,7 +63,7 @@ char return_load[100000];
 int transfer_data(void) {
 
 	//Set up the connection @port 8
-	printf("regmap[0]: %d\n", regmap[0] );
+//	printf("regmap[0]: %d\n", regmap[0] );
 
 	if (regmap[0]==1){
 		data_format(data_saw, stream, MAX_STREAM_SIZE);
@@ -76,7 +76,7 @@ int transfer_data(void) {
 	strncpy(potato->payload, stream, strlen(stream));
 	potato->tot_len = strlen(stream);
 	potato->len = strlen(stream);
-	udp_send(potato_pcb, potato);
+//	udp_send(potato_pcb, potato);
 
 	return 0;
 }

@@ -71,9 +71,10 @@ set rc [catch {
   set_param project.singleFileAddWarning.threshold 0
   set_property webtalk.parent_dir /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.cache/wt [current_project]
   set_property parent.project_path /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.xpr [current_project]
+  set_property ip_repo_paths /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman_HLS_designs [current_project]
   set_property ip_output_repo /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
-  set_property XPM_LIBRARIES {XPM_FIFO XPM_MEMORY} [current_project]
+  set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO XPM_MEMORY} [current_project]
   add_files -quiet /home/idlab-52/Desktop/GitVivado/WATCHMAN/prototype_watchman/prototype_watchman.runs/synth_1/prototype_watchman_wrapper.dcp
   set_msg_config -source 4 -id {BD 41-1661} -limit 0
   set_param project.isImplRun true
@@ -161,7 +162,7 @@ start_step write_bitstream
 set ACTIVE_STEP write_bitstream
 set rc [catch {
   create_msg_db write_bitstream.pb
-  set_property XPM_LIBRARIES {XPM_FIFO XPM_MEMORY} [current_project]
+  set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO XPM_MEMORY} [current_project]
   catch { write_mem_info -force prototype_watchman_wrapper.mmi }
   write_bitstream -force prototype_watchman_wrapper.bit 
   catch { write_sysdef -hwdef prototype_watchman_wrapper.hwdef -bitfile prototype_watchman_wrapper.bit -meminfo prototype_watchman_wrapper.mmi -file prototype_watchman_wrapper.sysdef }
