@@ -92,7 +92,7 @@ extern volatile int TcpSlowTmrFlag;
 static struct netif server_netif;
 struct netif *echo_netif;
 
-////////////////////////////////////////////////////////////////////////
+//////////////////////////////	Begin (1)	//////////////////////////////////////////
 #define DMA_DEV_ID		XPAR_AXIDMA_0_DEVICE_ID
 
 #define RX_INTR_ID		XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR
@@ -142,7 +142,7 @@ volatile int Error;
 u32 TxBuffer[ARRAY_LENGTH];
 u32 RxBuffer[ARRAY_LENGTH];
 
-////////////////////////////////////////////////////////////////
+/////////////////////////////	End (1) 	///////////////////////////////////
 #if LWIP_IPV6==1
 void print_ip6(char *msg, ip_addr_t *ip)
 {
@@ -193,6 +193,117 @@ int IicPhyReset(void);
 
 int main()
 {
+//////////////////////		Begin (2)		//////////////////////
+
+	int Status;
+	XAxiDma_Config *Config;
+	u32 i;
+
+	xil_printf("\r\n--- Entering main() --- \r\n");
+
+	Config = XAxiDma_LookupConfig(DMA_DEV_ID);
+	if (!Config) {
+		xil_printf("No config found for %d\r\n", DMA_DEV_ID);
+
+		return XST_FAILURE;
+	}
+
+	/* Initialize DMA engine */
+	Status = XAxiDma_CfgInitialize(&AxiDma, Config);
+
+	if (Status != XST_SUCCESS) {
+		xil_printf("Initialization failed %d\r\n", Status);
+		return XST_FAILURE;
+	}
+
+	if(XAxiDma_HasSg(&AxiDma)){
+		xil_printf("Device configured as SG mode \r\n");
+		return XST_FAILURE;
+	}
+
+	/* Set up Interrupt system  */
+	Status = SetupIntrSystem(&Intc, &AxiDma, TX_INTR_ID, RX_INTR_ID);
+	if (Status != XST_SUCCESS) {
+
+		xil_printf("Failed intr setup\r\n");
+		return XST_FAILURE;
+	}
+
+	/* Disable all interrupts before setup */
+
+	XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+						XAXIDMA_DMA_TO_DEVICE);
+
+	XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+				XAXIDMA_DEVICE_TO_DMA);
+
+	/* Enable all interrupts */
+	XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+							XAXIDMA_DMA_TO_DEVICE);
+
+
+	XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+							XAXIDMA_DEVICE_TO_DMA);
+
+	/* Initialize flags before start transfer test  */
+	TxDone = 0;
+	RxDone = 0;
+	Error = 0;
+
+	for(i = 0; i < ARRAY_LENGTH; i ++) {
+		TxBuffer[i] = i;	// initialize TxBuffer
+		RxBuffer[i] = 0;	// initialize RxBuffer with 0's
+
+	}
+
+	xil_printf("=========================================================\n");
+	for(i = 0; i < ARRAY_LENGTH; i++) {
+		xil_printf("TxBuffer[%d] = %d \r\n", i, TxBuffer[i]);
+	}
+
+	/* Flush the SrcBuffer before the DMA transfer, in case the Data Cache is enabled */
+	Xil_DCacheFlushRange((u32)TxBuffer, BYTES_TO_TRANSFER);
+
+	Status = XAxiDma_SimpleTransfer(&AxiDma,(u32) TxBuffer, BYTES_TO_TRANSFER, XAXIDMA_DMA_TO_DEVICE);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	Status = XAxiDma_SimpleTransfer(&AxiDma,(u32) RxBuffer, BYTES_TO_TRANSFER, XAXIDMA_DEVICE_TO_DMA);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	/* Wait TX done and RX done */
+	while (!TxDone && !RxDone && !Error) { /* NOP */ }
+
+	if (Error) {
+		xil_printf("Failed test transmit %s done, receive %s done\r\n", TxDone? "":" not", RxDone? "":" not");
+	}
+
+	/* Invalidate the DestBuffer before checking the data, in case the Data Cache is enabled */
+	Xil_DCacheInvalidateRange((u32)RxBuffer, BYTES_TO_TRANSFER);
+
+	xil_printf("=========================================================\n");
+	// check received data
+	for(i = 0; i < ARRAY_LENGTH; i++) {
+		if(RxBuffer[i] != i+5)
+			xil_printf("Error : RxBuffer[%d] = %d \r\n", i, RxBuffer[i]);
+		else
+			xil_printf("RxBuffer[%d] = %d \r\n", i, RxBuffer[i]);
+	}
+	xil_printf("=========================================================\n");
+	xil_printf("AXI DMA interrupt example test passed\r\n");
+
+
+	/* Disable TX and RX Ring interrupts and return success */
+
+	DisableIntrSystem(&Intc, TX_INTR_ID, RX_INTR_ID);
+
+//	return XST_SUCCESS;
+
+/////////////////////////////////////////////	End	(2)	/////////////////////////////////////////////////////////////////////////////////////////
+
 #if LWIP_IPV6==0
 	ip_addr_t ipaddr, netmask, gw, pc_ipaddr;
 
@@ -226,7 +337,7 @@ int main()
 	IP4_ADDR(&ipaddr,  192, 168,   1, 10);
 	IP4_ADDR(&netmask, 255, 255, 255,  0);
 	IP4_ADDR(&gw,      192, 168,   1,  1);
-#endif	
+#endif
 #endif
 	print_app_header();
 
@@ -299,124 +410,23 @@ int main()
 
 	/* start the application (web server, rxtest, txtest, etc..) */
 
+
 	start_application(pc_ipaddr);
-////////////////////////////////////////////
 
+	int count = 0;
+	int timer = 50000000;
 
-	int Status;
-		XAxiDma_Config *Config;
-		u32 i;
-
-		xil_printf("\r\n--- Entering main() --- \r\n");
-
-		Config = XAxiDma_LookupConfig(DMA_DEV_ID);
-		if (!Config) {
-			xil_printf("No config found for %d\r\n", DMA_DEV_ID);
-
-			return XST_FAILURE;
-		}
-
-		/* Initialize DMA engine */
-		Status = XAxiDma_CfgInitialize(&AxiDma, Config);
-
-		if (Status != XST_SUCCESS) {
-			xil_printf("Initialization failed %d\r\n", Status);
-			return XST_FAILURE;
-		}
-
-		if(XAxiDma_HasSg(&AxiDma)){
-			xil_printf("Device configured as SG mode \r\n");
-			return XST_FAILURE;
-		}
-
-		/* Set up Interrupt system  */
-		Status = SetupIntrSystem(&Intc, &AxiDma, TX_INTR_ID, RX_INTR_ID);
-		if (Status != XST_SUCCESS) {
-
-			xil_printf("Failed intr setup\r\n");
-			return XST_FAILURE;
-		}
-
-		/* Disable all interrupts before setup */
-
-		XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-							XAXIDMA_DMA_TO_DEVICE);
-
-		XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-					XAXIDMA_DEVICE_TO_DMA);
-
-		/* Enable all interrupts */
-		XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-								XAXIDMA_DMA_TO_DEVICE);
-
-
-		XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-								XAXIDMA_DEVICE_TO_DMA);
-
-		/* Initialize flags before start transfer test  */
-		TxDone = 0;
-		RxDone = 0;
-		Error = 0;
-
-		for(i = 0; i < ARRAY_LENGTH; i ++) {
-			TxBuffer[i] = i;	// initialize TxBuffer
-			RxBuffer[i] = 0;	// initialize RxBuffer with 0's
-
-		}
-
-		xil_printf("=========================================================\n");
-		for(i = 0; i < ARRAY_LENGTH; i++) {
-			xil_printf("TxBuffer[%d] = %d \r\n", i, TxBuffer[i]);
-		}
-
-		/* Flush the SrcBuffer before the DMA transfer, in case the Data Cache is enabled */
-		Xil_DCacheFlushRange((u32)TxBuffer, BYTES_TO_TRANSFER);
-
-		Status = XAxiDma_SimpleTransfer(&AxiDma,(u32) TxBuffer, BYTES_TO_TRANSFER, XAXIDMA_DMA_TO_DEVICE);
-		if (Status != XST_SUCCESS) {
-			return XST_FAILURE;
-		}
-
-		Status = XAxiDma_SimpleTransfer(&AxiDma,(u32) RxBuffer, BYTES_TO_TRANSFER, XAXIDMA_DEVICE_TO_DMA);
-		if (Status != XST_SUCCESS) {
-			return XST_FAILURE;
-		}
-
-		/* Wait TX done and RX done */
-		while (!TxDone && !RxDone && !Error) { /* NOP */ }
-
-		if (Error) {
-			xil_printf("Failed test transmit %s done, receive %s done\r\n", TxDone? "":" not", RxDone? "":" not");
-		}
-
-		/* Invalidate the DestBuffer before checking the data, in case the Data Cache is enabled */
-		Xil_DCacheInvalidateRange((u32)RxBuffer, BYTES_TO_TRANSFER);
-
-		xil_printf("=========================================================\n");
-		// check received data
-		for(i = 0; i < ARRAY_LENGTH; i++) {
-			if(RxBuffer[i] != i+5)
-				xil_printf("Error : RxBuffer[%d] = %d \r\n", i, RxBuffer[i]);
-			else
-				xil_printf("RxBuffer[%d] = %d \r\n", i, RxBuffer[i]);
-		}
-		xil_printf("=========================================================\n");
-		xil_printf("AXI DMA interrupt example test passed\r\n");
-
-
-		/* Disable TX and RX Ring interrupts and return success */
-
-		DisableIntrSystem(&Intc, TX_INTR_ID, RX_INTR_ID);
-
-//		return XST_SUCCESS;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* receive and process packets */
 	while (1) {
 
-		xemacif_input(echo_netif);
-		transfer_data();
-
+		if(count == timer){
+			xemacif_input(echo_netif);
+			transfer_data();
+			count = 0;
+		}
+		else{
+			count++;
+		}
 	}
 
 
@@ -426,7 +436,7 @@ int main()
 	return 0;
 }
 
-//////////////////////////////////////////////////////////////////
+/////////////////////////////	Begin (3)		/////////////////////////////////////
 
 static void TxIntrHandler(void *Callback)
 {
