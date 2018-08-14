@@ -76,7 +76,7 @@ int transfer_data(void) {
 	strncpy(potato->payload, stream, strlen(stream));
 	potato->tot_len = strlen(stream);
 	potato->len = strlen(stream);
-//	udp_send(potato_pcb, potato);
+	udp_send(potato_pcb, potato);
 
 	return 0;
 }
