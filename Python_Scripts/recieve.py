@@ -31,15 +31,32 @@ def main():
     sock.bind(("", UDP_PORT))
 
     recv_flag = 0
-
-    while (recv_flag != -1):
-#    while (1):
+    f = open("testdata.txt", "w")
+    f.write("begin\n")
+    f.close()
+#    while (recv_flag != -1):
+    while (1):
 
         data, server = sock.recvfrom(8192)
         # if(data[-3:-1] == 'end'):
         #     recv_flag = -1;
-        print >>sys.stderr, 'recieved "%s"' % data
+        f = open("testdata.txt", "a")
+        f.write("head/")
         if data.startswith('head'):
+            print "head\n"
+            dataFlag = 0;
+            while (dataFlag != 1):
+                data, server = sock.recvfrom(8192)
+                print >>sys.stderr, 'recieved "%s\n"' % data
+            
+                if data.startswith('endS'):
+                    dataFlag = 1;
+                    f.write("end\n")
+                else:
+                    f.write(data[0:(len(data))-4])
+
+
+"""
             if data[5:9]=='test':
                 A=data[10:-3]
                 B = [int(x) for x in A.split('/') if x.strip()]
@@ -55,7 +72,7 @@ def main():
                     count +=1
         outfile.close()
         recv_flag =-1
-
+"""
 
 
 
