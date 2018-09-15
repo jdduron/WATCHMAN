@@ -2,6 +2,10 @@
 <?scdStore version="2"?><scannerInfo id="org.eclipse.cdt.make.core.discoveredScannerInfo">
 <instance id="xilinx.gnu.armv7.exe.debug.1031258073;xilinx.gnu.armv7.exe.debug.1031258073.">
 <collector id="org.eclipse.cdt.make.core.PerProjectSICollector">
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/7.2.1/include"/>
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/7.2.1/include-fixed"/>
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include"/>
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../arm-none-eabi/libc/usr/include"/>
 <includePath path="#undef __ARM_FEATURE_CLZ" removed="true"/>
 <includePath path="#undef __ARM_FEATURE_NUMERIC_MAXMIN" removed="true"/>
 <includePath path="c:\xilinx\sdk\2018.1\gnu\aarch32\nt\gcc-arm-none-eabi\bin\../lib/gcc/arm-none-eabi/7.2.1/include"/>
@@ -851,6 +855,10 @@
 </instance>
 <instance id="xilinx.gnu.armv7.exe.debug.1031258073;xilinx.gnu.armv7.exe.debug.1031258073.;xilinx.gnu.armv7.c.toolchain.compiler.debug.1217767792;xilinx.gnu.armv7.c.compiler.input.1648471892">
 <collector id="org.eclipse.cdt.make.core.PerProjectSICollector">
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/7.2.1/include"/>
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/7.2.1/include-fixed"/>
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include"/>
+<includePath path="/opt/Xilinx/SDK/2018.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/../arm-none-eabi/libc/usr/include"/>
 <includePath path="#undef __ARM_FEATURE_LDREX" removed="true"/>
 <includePath path="c:\xilinx\sdk\2018.1\gnu\aarch32\nt\gcc-arm-none-eabi\bin\../lib/gcc/arm-none-eabi/7.2.1/include"/>
 <includePath path="#undef __ARM_FEATURE_CLZ" removed="true"/>

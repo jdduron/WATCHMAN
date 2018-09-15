@@ -41,12 +41,12 @@ def main():
 
     plt.figure(1)
     plt.ion()
-    
+
     plt.subplot(221)
     plt.draw()
 #    while (recv_flag != -1):
     while (1):
-        
+
         data, server = sock.recvfrom(8192)
         # if(data[-3:-1] == 'end'):
         #     recv_flag = -1;
@@ -55,47 +55,117 @@ def main():
             if data[5:9]=='test':
                 A=data[10:-3]
                 B = [int(x) for x in A.split('/') if x.strip()]
+                channel = B[0]
+                window = B[1]
+                sample = B[2]
+                C = B[3:]
+                potato = window*sample
 
-            y = np.zeros([4,16], np.int32)
+            y = np.zeros([channel,potato], np.int32)
             #outfile = open('test3', 'w')
             count=0
-            for a in range(0,4):
-                for b in range(0,16):
-                    y[a][b]=B[count]
+            for a in range(0,channel):
+                for b in range(0,potato):
+                    y[a][b]= C[count]
                     count +=1
      #       outfile.close()
             recv_flag =-1
 
-
         # plot with various axes scales
-        
-        x = np.linspace(0, 15, 16)
+
+        x = np.linspace(0, potato-1, potato)
+
+    #    print y[4][:]
 
         # linear
-        plt.subplot(221)
+        plt.subplot(4,4,1)
         plt.plot(x,y[0][:])
         plt.title('CH0')
         plt.grid(True)
 
 
         # log
-        plt.subplot(222)
+        plt.subplot(4,4,2)
         plt.plot(x,y[1][:])
         plt.title('CH1')
         plt.grid(True)
 
 
         # symmetric log
-        plt.subplot(223)
+        plt.subplot(4,4,3)
         plt.plot(x,y[2][:])
         plt.title('CH2')
         plt.grid(True)
 
         # logit
-        plt.subplot(224)
+        plt.subplot(4,4,4)
         plt.plot(x,y[3][:])
         plt.title('CH3')
         plt.grid(True)
+
+        plt.subplot(4,4,5)
+        plt.plot(x,y[4][:])
+        plt.title('CH4')
+        plt.grid(True)
+
+        plt.subplot(4,4,6)
+        plt.plot(x,y[5][:])
+        plt.title('CH5')
+        plt.grid(True)
+
+
+        plt.subplot(4,4,7)
+        plt.plot(x,y[6][:])
+        plt.title('CH6')
+        plt.grid(True)
+
+        plt.subplot(4,4,8)
+        plt.plot(x,y[7][:])
+        plt.title('CH7')
+        plt.grid(True)
+
+        plt.subplot(4,4,9)
+        plt.plot(x,y[8][:])
+        plt.title('CH8')
+        plt.grid(True)
+
+        plt.subplot(4,4,10)
+        plt.plot(x,y[9][:])
+        plt.title('CH9')
+        plt.grid(True)
+
+        plt.subplot(4,4,11)
+        plt.plot(x,y[10][:])
+        plt.title('CH10')
+        plt.grid(True)
+
+        plt.subplot(4,4,12)
+        plt.plot(x,y[11][:])
+        plt.title('CH11')
+        plt.grid(True)
+
+
+        plt.subplot(4,4,13)
+        plt.plot(x,y[12][:])
+        plt.title('CH12')
+        plt.grid(True)
+
+        plt.subplot(4,4,14)
+        plt.plot(x,y[13][:])
+        plt.title('CH13')
+        plt.grid(True)
+
+        plt.subplot(4,4,15)
+        plt.plot(x,y[14][:])
+        plt.title('CH14')
+        plt.grid(True)
+
+        plt.subplot(4,4,16)
+        plt.plot(x,y[15][:])
+        plt.title('CH15')
+        plt.grid(True)
+
+
         # Format the minor tick labels of the y-axis into empty strings with
         # `NullFormatter`, to avoid cumbering the axis with too many labels.
         plt.gca().yaxis.set_minor_formatter(NullFormatter())
@@ -103,12 +173,12 @@ def main():
         # than usual, due to y-tick labels like "1 - 10^{-3}"
         plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
                             wspace=0.35)
-        
+
         plt.draw()
         plt.pause(.1)
         plt.clf()
         #plt.show()
-        
+
         #time.sleep(5)
         #time.sleep(100)
         #plt.close('all')

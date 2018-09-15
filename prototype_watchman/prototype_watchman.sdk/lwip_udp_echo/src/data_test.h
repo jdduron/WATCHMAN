@@ -13,13 +13,14 @@
 #include "lwip/udp.h"
 #include "xil_printf.h"
 
+#define CHANNEL 16
 #define WINDOW 4
-#define CHANNEL 4
-#define SAMPLE 4
+#define SAMPLE 32
+#define MAX_STREAM_SIZE 10000
 
 void data_test(int data[CHANNEL][WINDOW][SAMPLE]);
-void data_rand(int data[CHANNEL][WINDOW][SAMPLE]);
-void data_format(int data[CHANNEL][WINDOW][SAMPLE], char stream[], int stream_size);
+void data_rand(int data[CHANNEL][WINDOW][SAMPLE], int a);
+void data_format(int data[CHANNEL][WINDOW][SAMPLE], char stream[], int stream_size, int a);
 
 
 
