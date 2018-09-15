@@ -63,26 +63,26 @@ def get_commands(parser):
         elif options.command == "ping":
             options.message = ''
 	    all_commands = all_commands + options.command + delimiter
-            packet_length += 2;
+            packet_length += 1;
 
         #Read All - Reads All Registers
         elif options.command == "rall":
             options.message = ''
 	    all_commands = all_commands + options.command + delimiter
-            packet_length += 2;
+            packet_length += 1;
 
         #Read or Rite
         elif options.command == "rite":
             options.message = raw_input('Enter reg address: ');
             all_commands = all_commands + options.command + delimiter + options.message + delimiter
             options.message = raw_input('Enter reg value:')
-            packet_length += 4;
+            packet_length += 3;
             options.message = options.message.strip()
 	    all_commands = all_commands + options.message + delimiter
 
         elif options.command == "read":
             options.message = raw_input('Enter reg address: ');
-            packet_length += 3;
+            packet_length += 2;
             options.message = options.message.strip()
 	    all_commands = all_commands + options.command + delimiter + options.message + delimiter
 
@@ -94,6 +94,7 @@ def get_commands(parser):
         all_commands = all_commands.strip()
 
     #include the packet length and return back to main
+    packet_length += 1;
     payload = 'head' + delimiter + str(packet_length) + delimiter + all_commands + 'end' + delimiter #payload with header, without checksum and 'end'
     #    checksum = testing 1 2 3 4
     print payload;

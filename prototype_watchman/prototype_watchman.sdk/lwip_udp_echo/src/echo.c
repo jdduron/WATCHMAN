@@ -36,17 +36,15 @@
 #include "cmd_interpreter.h"
 #include "reg_map.h"
 #include "data_test.h"
-
-#define MAX_STREAM_SIZE 10000
-
 #include "lwip/err.h"
 #include "lwip/udp.h"
+
 #define MAX_ARRAY_SIZE 100
 #if defined (__arm__) || defined (__aarch64__)
 #include "xil_printf.h"
 #endif
 
-#define MAX_STREAM_SIZE 10000
+void axi_test();
 
 int regmap[REGMAP_SIZE];
 
@@ -57,26 +55,67 @@ char stream[MAX_STREAM_SIZE];
 struct udp_pcb *potato_pcb;
 struct pbuf *potato;
 
-char return_load[100000];
-
+char return_load[10000];
 
 int transfer_data(void) {
 
-	//Set up the connection @port 8
-//	printf("regmap[0]: %d\n", regmap[0] );
+	//Send a header packet first
+	//Create a "header" before the payload, format: head/test/<CHANNEL>/<WINDOW>/<SAMPLE>/<PAYLOAD>/end
+	char channel_window_sample_size[10];
 
-	if (regmap[0]==1){
-		data_format(data_saw, stream, MAX_STREAM_SIZE);
-	}
-	else if (regmap[0] != 1){
-		data_rand(data);
-		data_format(data, stream, MAX_STREAM_SIZE);
-	}
+	memset(stream, 0, sizeof(stream));
+
+	strcpy(stream, "head");
+	strcat(stream, "/test");
+
+	itoa(CHANNEL, channel_window_sample_size, 10);
+	strcat(stream, "/");
+	strcat(stream, channel_window_sample_size);
+
+	itoa(WINDOW, channel_window_sample_size, 10);
+	strcat(stream, "/");
+	strcat(stream, channel_window_sample_size);
+
+	itoa(SAMPLE, channel_window_sample_size, 10);
+	strcat(stream, "/");
+	strcat(stream, channel_window_sample_size);
+
+	strcat(stream, "/");
+	strcat(stream, "end");
 
 	strncpy(potato->payload, stream, strlen(stream));
 	potato->tot_len = strlen(stream);
 	potato->len = strlen(stream);
 	udp_send(potato_pcb, potato);
+
+	for(int a = 0; a < CHANNEL ; a+=2){
+
+		//clean the return stream
+    	memset(stream, 0, sizeof(stream));
+		if (regmap[0] == 1){
+			data_format(data_saw, stream, MAX_STREAM_SIZE, a);
+		}
+		else if (regmap[0] != 1){
+			data_rand(data, a);
+			data_format(data, stream, MAX_STREAM_SIZE, a);
+		}
+		strncpy(potato->payload, stream, strlen(stream));
+		potato->tot_len = strlen(stream);
+		potato->len = strlen(stream);
+		udp_send(potato_pcb, potato);
+	}
+
+	memset(stream, 0, sizeof(stream));
+
+	strcpy(stream, "endS");
+	strcat(stream, "/end");
+
+	strncpy(potato->payload, stream, strlen(stream));
+	potato->tot_len = strlen(stream);
+	potato->len = strlen(stream);
+	udp_send(potato_pcb, potato);
+
+//	axi_test();
 
 	return 0;
 }
@@ -124,6 +163,7 @@ void udp_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, struct
     	printf("###########END###########\n");
 
     }
+    	free(p);
 
 }
 
@@ -136,13 +176,17 @@ int start_application(ip_addr_t pc_ipaddr)
 
 	reg_map(regmap);
 	data_test(data_saw);
-	data_format(data_saw, stream, MAX_STREAM_SIZE);
+//	data_format(data_saw, stream, MAX_STREAM_SIZE);
+	for(int i = 0; i<REGMAP_SIZE; i++)
+		{
+	    	printf("App: regmap[%d] = %d\n", i, regmap[i]);
+	    }
 
 
 	/* create new UDP PCB structure */
 	potato_pcb = setup_send_data(potato_pcb, pc_ipaddr);
-	potato = pbuf_alloc(PBUF_TRANSPORT,4096,PBUF_RAM);
-	printf("the stream: %s length: %d\n", stream, strlen(stream));
+	potato = pbuf_alloc(PBUF_TRANSPORT,5620,PBUF_RAM);
+//	printf("the stream: %s length: %d\n", stream, strlen(stream));
 
 	/* create new TCP PCB structure */
 	pcb = udp_new_ip_type(IPADDR_TYPE_ANY);

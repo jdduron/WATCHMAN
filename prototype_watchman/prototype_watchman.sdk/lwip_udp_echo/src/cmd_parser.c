@@ -4,7 +4,7 @@
 #include "reg_map.h"
 #include <stdlib.h>
 
-void command_parser(struct pbuf *p, int* regmap){
+void command_parser(struct pbuf *p, int regmap[]){
 	char* payload = p->payload;
 	int cmd_buf_size = 0;
 	const char delimiter[2] = "/";
@@ -21,10 +21,15 @@ void command_parser(struct pbuf *p, int* regmap){
 		command_buffer[cmd_buf_size] = token;
 		cmd_buf_size++;
 	}
+
 	int index_send_buffer = 2;
 	char reg_val_string[100];
 
+
 	command_buffer[cmd_buf_size] = NULL;
+
+	for(int i = 0; i < cmd_buf_size; i++) printf("Inside cmd_buffer[%d]: %s\n", i, command_buffer[i] );
+
 	//Goes through the command buffer and interprets each command
 	for(int i = 2; i < cmd_buf_size-2; i++){
 
@@ -53,15 +58,16 @@ void command_parser(struct pbuf *p, int* regmap){
 		else if(strcmp(command_buffer[i],"rall") == 0){
 
 			strncpy(return_buffer[index_send_buffer], "rall", 4);
-			for(int a = 0; a<REGMAP_SIZE; a++)
+			int a;
+			for(a = 0; a<REGMAP_SIZE; a++)
 				{
 				itoa(reg_read(a, regmap), reg_val_string, 10);
 				strncpy(return_buffer[index_send_buffer+1+a], reg_val_string, 4);
 				printf("return_buffer for read:cmd-%s [a]=%d addr:%s val:%s \n",
 				return_buffer[index_send_buffer+a], a, return_buffer[index_send_buffer+1+a] , return_buffer[index_send_buffer+2+a]);
 				}
-			index_send_buffer += 11;
-			i++;
+			index_send_buffer = index_send_buffer + a + 1 ;
+
 		}
 		/*		Write		*/
 		else if(strcmp(command_buffer[i],"rite") == 0){
@@ -82,9 +88,10 @@ void command_parser(struct pbuf *p, int* regmap){
 		else{
 			printf("%s is not a valid command\n", command_buffer[i]);
 		}
+		printf("Index: send_buf[%d]", index_send_buffer);
 
 	}
-	itoa(index_send_buffer, return_buffer[1], 10);
+	itoa(index_send_buffer-1, return_buffer[1], 10);
 	strncpy(return_buffer[index_send_buffer], "end", 3);
 
 }

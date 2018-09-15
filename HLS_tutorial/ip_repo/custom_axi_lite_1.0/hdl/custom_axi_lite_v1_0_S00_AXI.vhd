@@ -86,6 +86,7 @@ entity custom_axi_lite_v1_0_S00_AXI is
 	);
 end custom_axi_lite_v1_0_S00_AXI;
 
+
 architecture arch_imp of custom_axi_lite_v1_0_S00_AXI is
 
 	-- AXI4LITE signals
@@ -227,6 +228,7 @@ begin
 	      slv_reg2 <= (others => '0');
 	      slv_reg3 <= (others => '0');
 	      slv_reg4 <= (others => '0');
+	      
 --	      slv_reg5 <= (others => '0');
 --	      slv_reg6 <= (others => '0');
 --	      slv_reg7 <= (others => '0');
